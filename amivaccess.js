@@ -1,18 +1,16 @@
 (function(window) {
   'use strict';
-  if (typeof jQuery == 'undefined') {
-    var imported = document.createElement('script');
-    imported.src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js';
-    document.head.appendChild(imported);
-  }
 
   function amivaccessLib() {
     var amivaccess = {};
     var libName = 'amivaccess';
 
     var core_lib = {
+      api_url: 'https://amiv-apidev.vsos.ethz.ch',
       api_domains: ['sessions', 'users', 'events'],
       spec_url: 'https://www.nicco.io/amiv/spec.json',
+      authenticated: false,
+      cue: 0,
       //spec_url: 'https://amiv-apidev.vsos.ethz.ch/docs/spec.json',
     }
 
@@ -21,8 +19,6 @@
     function isEmpty(obj) {
       return Object.keys(obj).length == 0;
     }
-
-    amivaccess.authenticated = false;
 
     function req(attr) {
       var ret = false;
@@ -37,9 +33,7 @@
         success: function(msg) {
           ret = msg;
         },
-        error: function(msg) {
-          err(msg);
-        },
+        error: function(msg) {},
       });
       return ret;
     }
@@ -50,7 +44,18 @@
         for (var curAttr in attr)
           curLib[curAttr] = attr[curAttr];
         var curPath = '/' + domain;
-        if (id) curPath += '/' + id;
+        var curLink = curPath;
+        if (id) {
+          curPath += '/' + id;
+          curLink += '/{_id}';
+        }
+
+        //console.log(amivaccess[domain]['methods'][m][curLink]['params']);
+        for (var param in amivaccess[domain]['methods'][m][curLink]['params']) {
+          if (amivaccess[domain]['methods'][m][curLink]['params'][param]['required'] == true)
+            if (curLib[amivaccess[domain]['methods'][m][curLink]['params'][param]['name']] == undefined)
+              return 'Error: Missing ' + amivaccess[domain]['methods'][m][curLink]['params'][param]['name'];
+        }
 
         return req({
           path: curPath,
@@ -91,8 +96,26 @@
       }
     });
 
+    if (localStorage.cur_token != undefined) {
+      lib.cur_token = localStorage.cur_token;
+      if (amivaccess.sessions.GET({
+          where: 'token==["' + lib.cur_token + '"]'
+        })['_items'].length == 0)
+        core_lib.authenticated = false;
+      else
+        core_lib.authenticated = true;
+    }
+
+    amivaccess.authenticated = function() {
+      return core_lib.authenticated;
+    }
+
     amivaccess.read = function() {
       console.log(amivaccess);
+    }
+
+    amivaccess.help = function(h) {
+      console.log(amivaccess[h]);
     }
 
     amivaccess.login = function(curUser, curPass) {
@@ -110,14 +133,15 @@
         localStorage['cur_' + reqVar[i]] = msg[reqVar[i]];
       }
       if (msg) {
-        amivaccess.authenticated = true;
+        core_lib.authenticated = true;
         return true;
       } else {
-        amivaccess.authenticated = false;
+        core_lib.authenticated = false;
         return false;
       }
     }
 
+    //cue--;
     return amivaccess;
   }
 
