@@ -15,6 +15,38 @@
 
     var lib = {};
 
+    function setCookie(cname, cvalue, exdays) {
+      var d = new Date();
+      d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+      var expires = "expires=" + d.toGMTString();
+      document.cookie = cname + "=" + cvalue + "; " + expires;
+    }
+
+    function getCookie(cname) {
+      var name = cname + "=";
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return "";
+    }
+
+    function checkCookie() {
+      var user = getCookie("username");
+      if (user != "") {
+        alert("Welcome again " + user);
+      } else {
+        user = prompt("Please enter your name:", "");
+        if (user != "" && user != null) {
+          setCookie("username", user, 30);
+        }
+      }
+    }
+
     function isEmpty(obj) {
       return Object.keys(obj).length == 0;
     }
@@ -95,9 +127,8 @@
       }
     });
 
-    /*
-    if (localStorage.cur_token != undefined) {
-      lib.cur_token = localStorage.cur_token;
+    if (getCookie('cur_token') != '') {
+      lib.cur_token = getCookie('cur_token');
       if (amivaccess.sessions.GET({
           where: 'token==["' + lib.cur_token + '"]'
         })['_items'].length == 0)
@@ -105,8 +136,7 @@
       else
         core_lib.authenticated = true;
     }
-    */
-    
+
     amivaccess.authenticated = function() {
       return core_lib.authenticated;
     }
@@ -135,8 +165,10 @@
       }
       if (msg) {
         core_lib.authenticated = true;
+        setCookie('cur_token', msg['token'], 1);
         return true;
       } else {
+        setCookie('cur_token', '', -1);
         core_lib.authenticated = false;
         return false;
       }
