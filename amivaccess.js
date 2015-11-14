@@ -1,5 +1,10 @@
 (function(window) {
   'use strict';
+  if (typeof jQuery == 'undefined') {
+    var imported = document.createElement('script');
+    imported.src = 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js';
+    document.head.appendChild(imported);
+  }
 
   function amivaccessLib() {
     var amivaccess = {};
