@@ -174,6 +174,11 @@
       }
     }
 
+    amivaccess.logout = function(){
+	    setCookie('cur_token', '', -1);
+	    location.reload();
+    }
+
     //cue--;
     return amivaccess;
   }
