@@ -49,14 +49,6 @@
         var curLib = {}
         for (var curAttr in attr)
           curLib[curAttr] = attr[curAttr];
-
-        /*
-		    var curPath;
-		    console.log(amivaccess[domain][m]);
-		    if(id) curPath = amivaccess[domain][m];
-		    else curPath = amivaccess[domain][m]
-			*/
-
         var curPath = '/' + domain;
         if (id) curPath += '/' + id;
 
