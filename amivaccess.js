@@ -6,12 +6,12 @@
     var libName = 'amivaccess';
 
     var core_lib = {
-      api_url: 'https://amiv-apidev.vsos.ethz.ch',
+      //api_url: 'https://amiv-apidev.vsos.ethz.ch',
       api_domains: ['sessions', 'users', 'events'],
       spec_url: 'https://www.nicco.io/amiv/spec.json',
       authenticated: false,
       cue: 0,
-      //spec_url: 'https://amiv-apidev.vsos.ethz.ch/docs/spec.json',
+      spec_url: 'https://amiv-apidev.vsos.ethz.ch/docs/spec.json',
     }
 
     var lib = {};
