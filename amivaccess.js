@@ -95,6 +95,7 @@
       }
     });
 
+    /*
     if (localStorage.cur_token != undefined) {
       lib.cur_token = localStorage.cur_token;
       if (amivaccess.sessions.GET({
@@ -104,7 +105,8 @@
       else
         core_lib.authenticated = true;
     }
-
+    */
+    
     amivaccess.authenticated = function() {
       return core_lib.authenticated;
     }
