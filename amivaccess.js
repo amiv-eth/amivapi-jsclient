@@ -76,25 +76,28 @@
           curLib[curAttr] = attr[curAttr];
         var curPath = '/' + domain;
         var curLink = curPath;
-        if (id) {
+        if (id != undefined) {
           curPath += '/' + id;
           curLink += '/{_id}';
         }
 
-        //console.log(amivaccess[domain]['methods'][m][curLink]['params']);
-        for (var param in amivaccess[domain]['methods'][m][curLink]['params']) {
-          if (amivaccess[domain]['methods'][m][curLink]['params'][param]['required'] == true)
-            if (curLib[amivaccess[domain]['methods'][m][curLink]['params'][param]['name']] == undefined)
-              return 'Error: Missing ' + amivaccess[domain]['methods'][m][curLink]['params'][param]['name'];
-        }
+        var AuthHeader = {};
+        if (lib.cur_token != undefined)
+          AuthHeader = {
+            'Authorization': 'Basic ' + btoa(lib.cur_token + ':')
+          }
+
+        if (m != 'GET')
+          for (var param in amivaccess[domain]['methods'][m][curLink]['params'])
+            if (amivaccess[domain]['methods'][m][curLink]['params'][param]['required'] == true)
+              if (curLib[amivaccess[domain]['methods'][m][curLink]['params'][param]['name']] == undefined)
+                return 'Error: Missing ' + amivaccess[domain]['methods'][m][curLink]['params'][param]['name'];
 
         return req({
           path: curPath,
           method: m,
           data: curLib,
-          headers: {
-            'Authorization': 'Basic ' + btoa(lib.cur_token + ':')
-          },
+          headers: AuthHeader,
         })
       };
     }
@@ -141,8 +144,10 @@
       return core_lib.authenticated;
     }
 
-    amivaccess.read = function() {
-      console.log(amivaccess);
+    amivaccess.user = function(attr) {
+      console.log(lib.cur_user_id);
+      var tmp = amivaccess.users.GET({}, lib.cur_user_id);
+      console.log(tmp);
     }
 
     amivaccess.help = function(h) {
@@ -161,7 +166,6 @@
       var reqVar = ['token', 'user_id'];
       for (var i in reqVar) {
         lib['cur_' + reqVar[i]] = msg[reqVar[i]];
-        localStorage['cur_' + reqVar[i]] = msg[reqVar[i]];
       }
       if (msg) {
         core_lib.authenticated = true;
@@ -174,9 +178,9 @@
       }
     }
 
-    amivaccess.logout = function(){
-	    setCookie('cur_token', '', -1);
-	    location.reload();
+    amivaccess.logout = function() {
+      setCookie('cur_token', '', -1);
+      location.reload();
     }
 
     //cue--;
