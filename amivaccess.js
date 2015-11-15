@@ -145,9 +145,15 @@
     }
 
     amivaccess.user = function(attr) {
-      console.log(lib.cur_user_id);
-      var tmp = amivaccess.users.GET({}, lib.cur_user_id);
-      console.log(tmp);
+      if (typeof attr === 'object') {
+        var tmp = amivaccess.users.GET({}, lib.cur_user_id);
+        var ret = {};
+        for (var key in attr)
+          ret[attr[key]] = tmp[attr[key]];
+        return ret;
+      } else {
+        return amivaccess.users.GET({}, lib.cur_user_id)[attr];
+      }
     }
 
     amivaccess.help = function(h) {
@@ -183,7 +189,6 @@
       location.reload();
     }
 
-    //cue--;
     return amivaccess;
   }
 
