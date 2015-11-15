@@ -7,7 +7,7 @@
 
     var core_lib = {
       api_url: 'https://amiv-apidev.vsos.ethz.ch',
-      api_domains: ['sessions', 'users', 'events'],
+      api_domains: ['sessions', 'users', 'events', 'permissions'],
       authenticated: false,
       cue: 0,
       spec_url: 'https://rawgit.com/amiv-eth/amiv-jsclient/master/spec.json',
@@ -132,10 +132,10 @@
 
     if (getCookie('cur_token') != '') {
       lib.cur_token = getCookie('cur_token');
+      lib.cur_user_id = getCookie('cur_user_id');
       var res = amivaccess.sessions.GET({
         where: 'token==["' + lib.cur_token + '"]'
       });
-      console.log(res);
       if (res != false && res['_items'].length == 0)
         core_lib.authenticated = false;
       else
@@ -144,22 +144,6 @@
 
     amivaccess.authenticated = function() {
       return core_lib.authenticated;
-    }
-
-    amivaccess.user = function(attr) {
-      if (typeof attr === 'object') {
-        var tmp = amivaccess.users.GET({}, lib.cur_user_id);
-        var ret = {};
-        for (var key in attr)
-          ret[attr[key]] = tmp[attr[key]];
-        return ret;
-      } else {
-        return amivaccess.users.GET({}, lib.cur_user_id)[attr];
-      }
-    }
-
-    amivaccess.help = function(h) {
-      console.log(amivaccess[h]);
     }
 
     amivaccess.login = function(curUser, curPass) {
@@ -178,9 +162,11 @@
       if (msg) {
         core_lib.authenticated = true;
         setCookie('cur_token', msg['token'], 1);
+        setCookie('cur_user_id', msg['user_id'], 1);
         return true;
       } else {
         setCookie('cur_token', '', -1);
+        setCookie('cur_user_id', '', -1);
         core_lib.authenticated = false;
         return false;
       }
@@ -189,6 +175,26 @@
     amivaccess.logout = function() {
       setCookie('cur_token', '', -1);
       location.reload();
+    }
+
+    amivaccess.user = function(attr) {
+      if (typeof attr === 'object') {
+        var tmp = amivaccess.users.GET({}, lib.cur_user_id);
+        var ret = {};
+        for (var key in attr)
+          ret[attr[key]] = tmp[attr[key]];
+        return ret;
+      } else {
+        return amivaccess.users.GET({}, lib.cur_user_id)[attr];
+      }
+    }
+
+    amivaccess.set = function(sel, attr) {
+      $(sel).text(amivaccess.user(attr));
+    }
+
+    amivaccess.ready = function(func) {
+      func;
     }
 
     return amivaccess;
