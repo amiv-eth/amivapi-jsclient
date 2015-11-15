@@ -34,11 +34,15 @@ if(amivaccess.login('Anon', 'P4$$w0rd'))
 
 <br>
 ### Authendticated()
-```amivaccess.authenticated()```
+```
+amivaccess.authenticated()
+```
 #### Description:
 Check if is authenticated
 #### Returns
-```True/False```
+```
+True/False
+```
 #### Example:
 ```
 if(amivaccess.authenticated())
