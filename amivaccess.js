@@ -7,7 +7,7 @@
 
     var core_lib = {
       api_url: 'https://amiv-apidev.vsos.ethz.ch',
-      api_domains: ['sessions', 'users', 'events', 'permissions'],
+      api_domains: ['sessions', 'users', 'events', 'permissions', 'groups'],
       authenticated: false,
       cue: 0,
       spec_url: 'https://rawgit.com/amiv-eth/amiv-jsclient/master/spec.json',
@@ -64,16 +64,23 @@
         success: function(msg) {
           ret = msg;
         },
-        error: function(msg) {},
+        error: function(msg) {
+          console.log(msg);
+        },
       });
       return ret;
     }
 
     function makeFunc(domain, m) {
-      return function(attr, id) {
+      return function(attr, id, custHeader) {
         var curLib = {}
         for (var curAttr in attr)
           curLib[curAttr] = attr[curAttr];
+
+        var hdr = {};
+        for (var curHdr in custHeader)
+          hdr[curHdr] = custHeader[curHdr];
+
         var curPath = '/' + domain;
         var curLink = curPath;
         if (id != undefined) {
@@ -81,23 +88,22 @@
           curLink += '/{_id}';
         }
 
-        var AuthHeader = {};
         if (lib.cur_token != undefined)
-          AuthHeader = {
-            'Authorization': 'Basic ' + btoa(lib.cur_token + ':')
-          }
+          hdr['Authorization'] = 'Basic ' + btoa(lib.cur_token + ':');
 
-        if (m != 'GET')
+        if (m != 'GET') {
           for (var param in amivaccess[domain]['methods'][m][curLink]['params'])
             if (amivaccess[domain]['methods'][m][curLink]['params'][param]['required'] == true)
               if (curLib[amivaccess[domain]['methods'][m][curLink]['params'][param]['name']] == undefined)
                 return 'Error: Missing ' + amivaccess[domain]['methods'][m][curLink]['params'][param]['name'];
+          hdr['Content-Type'] = 'application/json';
+        }
 
         return req({
           path: curPath,
           method: m,
-          data: curLib,
-          headers: AuthHeader,
+          data: JSON.stringify(curLib),
+          headers: hdr,
         })
       };
     }

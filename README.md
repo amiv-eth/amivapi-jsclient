@@ -33,6 +33,14 @@ if(amivaccess.login('Anon', 'P4$$w0rd'))
 ```
 
 <br>
+### Logout()
+```
+amivaccess.logout;
+```
+#### Description:
+Logges out a user
+
+<br>
 ### Authendticated()
 ```
 amivaccess.authenticated()
@@ -73,14 +81,15 @@ console.log(amivaccess.user(['firstname','lastname']));
 <br>
 ## General Syntax
 
-```amivaccess.{domain}.{method}(data, id)```
+```amivaccess.{domain}.{method}(data, id, headers)```
 #### Description:
 Access all the domains of the API (e.g. 'events' or 'users')<br>
 Allowed methods are: GET, POST, DELETE, PATCH, PUT
 
 #### Parameter:
 ```data (object)``` (Optional) Data that will be transmitted to the API<br>
-```id (integer)```  (Optional) Action will be performed on specific id
+```id (integer)```  (Optional) Action will be performed on specific id <br>
+```header (object)```  (Optional) Specify header
 
 #### Returns:
 ```response (obeject)```
