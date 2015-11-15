@@ -132,9 +132,11 @@
 
     if (getCookie('cur_token') != '') {
       lib.cur_token = getCookie('cur_token');
-      if (amivaccess.sessions.GET({
-          where: 'token==["' + lib.cur_token + '"]'
-        })['_items'].length == 0)
+      var res = amivaccess.sessions.GET({
+        where: 'token==["' + lib.cur_token + '"]'
+      });
+      console.log(res);
+      if (res != false && res['_items'].length == 0)
         core_lib.authenticated = false;
       else
         core_lib.authenticated = true;
