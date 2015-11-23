@@ -7,10 +7,13 @@
 
     var core_lib = {
       api_url: 'https://amiv-apidev.vsos.ethz.ch',
+      spec_url: 'https://rawgit.com/amiv-eth/amiv-jsclient/master/spec.json',
+      //spec_url: 'https://amiv-apidev.vsos.ethz.ch/docs/spec.json',
       api_domains: ['sessions', 'users', 'events', 'permissions', 'groups'],
       authenticated: false,
-      cue: 0,
-      spec_url: 'https://rawgit.com/amiv-eth/amiv-jsclient/master/spec.json',
+      ready: false,
+      time_out: 50,
+      reqDone: {},
     }
 
     var lib = {};
@@ -47,10 +50,6 @@
       }
     }
 
-    function isEmpty(obj) {
-      return Object.keys(obj).length == 0;
-    }
-
     function req(attr) {
       var ret = false;
       $.ajax({
@@ -59,7 +58,7 @@
         data: attr.data,
         method: attr.method,
         dataType: 'json',
-        timeout: 5000,
+        timeout: 3000,
         headers: attr.headers,
         success: function(msg) {
           ret = msg;
@@ -112,7 +111,7 @@
     $.ajax({
       url: core_lib.spec_url,
       dataType: 'json',
-      async: false,
+      timeout: 5000,
       success: function(d) {
         var data = d['domains'];
         for (var domain in data) {
@@ -130,25 +129,30 @@
             }
           }
         }
+        core_lib.ready = true;
       },
       error: function(d) {
+        console.log('Cannot reach AMIVAPI');
         console.log(d);
       }
     });
 
-    if (getCookie('cur_token') != '') {
-      lib.cur_token = getCookie('cur_token');
-      lib.cur_user_id = getCookie('cur_user_id');
-      var res = amivaccess.sessions.GET({
-        where: 'token==["' + lib.cur_token + '"]'
-      });
-      if (res != false && res['_items'].length == 0)
-        core_lib.authenticated = false;
-      else
-        core_lib.authenticated = true;
+    function checkAuth() {
+      if (getCookie('cur_token') != '') {
+        lib.cur_token = getCookie('cur_token');
+        lib.cur_user_id = getCookie('cur_user_id');
+        var res = amivaccess.sessions.GET({
+          where: 'token==["' + lib.cur_token + '"]'
+        });
+        if (res != false && res['_items'].length == 0)
+          core_lib.authenticated = false;
+        else
+          core_lib.authenticated = true;
+      }
     }
 
     amivaccess.authenticated = function() {
+      checkAuth();
       return core_lib.authenticated;
     }
 
@@ -156,9 +160,12 @@
       var msg = req({
         path: '/sessions/',
         method: 'POST',
-        data: {
-          user: curUser,
+        data: JSON.stringify({
+          user: curUser.toLowerCase(),
           password: curPass
+        }),
+        headers: {
+          'Content-Type': 'application/json',
         },
       });
       var reqVar = ['token', 'user_id'];
@@ -200,7 +207,12 @@
     }
 
     amivaccess.ready = function(func) {
-      func;
+      if (core_lib.ready) {
+        checkAuth();
+        func();
+      } else setTimeout(function() {
+        amivaccess.ready(func);
+      }, core_lib.time_out);
     }
 
     return amivaccess;
