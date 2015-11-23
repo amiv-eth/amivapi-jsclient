@@ -58,6 +58,24 @@ if(amivaccess.authenticated())
 ```
 
 <br>
+### Ready()
+```
+amivaccess.ready( function );
+```
+#### Description:
+Takes a function and executes it when the API is fully loaded
+#### Parameter:
+```function ()```
+
+#### Example:
+```
+amivapi.ready(function(){
+	console.log(amivaccess.events.GET())
+	\\ List of all events
+});
+```
+
+<br>
 ### User()
 ```
 amivcaccess.user(attr);
@@ -85,6 +103,7 @@ console.log(amivaccess.user(['firstname','lastname']));
 #### Description:
 Access all the domains of the API (e.g. 'events' or 'users')<br>
 Allowed methods are: GET, POST, DELETE, PATCH, PUT
+These calls may only be made when the API is loaded
 
 #### Parameter:
 ```data (object)``` (Optional) Data that will be transmitted to the API<br>
