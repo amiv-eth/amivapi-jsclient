@@ -14,7 +14,7 @@ Needs jQuery:<br>
 
 ## Core Funcitons
 
-### Login()
+### login()
 ```
 amivaccess.login(username, password);
 ```
@@ -33,7 +33,7 @@ if(amivaccess.login('Anon', 'P4$$w0rd'))
 ```
 
 <br>
-### Logout()
+### logout()
 ```
 amivaccess.logout;
 ```
@@ -41,11 +41,11 @@ amivaccess.logout;
 Logges out a user
 
 <br>
-### Authendticated()
+### authendticated()
 ```
 amivaccess.authenticated()
 ```
-#### Description:
+#### description:
 Check if is authenticated
 #### Returns
 ```
@@ -58,7 +58,7 @@ if(amivaccess.authenticated())
 ```
 
 <br>
-### Ready()
+### ready()
 ```
 amivaccess.ready( function );
 ```
@@ -76,7 +76,7 @@ amivapi.ready(function(){
 ```
 
 <br>
-### User()
+### user()
 ```
 amivcaccess.user(attr);
 ```
@@ -94,6 +94,21 @@ console.log(amivaccess.user('firstname'));
 
 console.log(amivaccess.user(['firstname','lastname']));
 \\ {firstname: "Anon", lastname: "Imus"}
+```
+
+<br>
+### getEtag()
+```
+amivcaccess.getEtag();
+```
+#### Description:
+Gets the current sessions etag
+#### Returns:
+```etag (string)```
+#### Example:
+```
+console.log(amivaccess.getEtag());
+\\ "08fs87v349o8ydfkj3b4kjhew9fhi3u4h9"
 ```
 
 <br>
