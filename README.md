@@ -4,7 +4,7 @@
 ## USE
 To use please include in header:<br>
 ```
-<script src="https://rawgit.com/amiv-eth/amiv-jsclient/master/amivaccess.js" type="text/JavaScript"></script
+<script src="https://rawgit.com/amiv-eth/amiv-jsclient/master/amivaccess.js" type="text/JavaScript"></script>
 ```
 
 Needs jQuery:<br>
