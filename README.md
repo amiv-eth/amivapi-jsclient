@@ -16,20 +16,20 @@ Needs jQuery:<br>
 
 ### login()
 ```
-amivaccess.login(username, password);
+amivaccess.login(username, password, callback);
 ```
 #### Description:
 Authenticates a user and saves a cookie for future authentication
 #### Parameter:
 ```username (string)```
 ```password (string)```
+```callback (function)```
 
-#### Returns:
-```True/False``` if login was succesfull/failed
 #### Example:
 ```
-if(amivaccess.login('Anon', 'P4$$w0rd'))
-	console.log('Login Successfull');
+amivaccess.login('Anon', 'P4$$w0rd'), function(res){
+	if(res) console.log('Logged in!');
+});
 ```
 
 <br>
@@ -78,22 +78,25 @@ amivapi.ready(function(){
 <br>
 ### user()
 ```
-amivcaccess.user(attr);
+amivcaccess.user(attr, callback);
 ```
 #### Description:
 Get attributes of current user. Must be logged in.
 #### Parameter:
 
 ```attribute (string)/attributes (array)```
-#### Returns:
-```attribute (string)/attributes (object)```
+```callback (function)```
 #### Example:
 ```
-console.log(amivaccess.user('firstname'));
-\\ "Anon"
+amivaccess.user('firstname'), function(res){
+	console.log(res);
+	\\ "Anon"
+});
 
-console.log(amivaccess.user(['firstname','lastname']));
-\\ {firstname: "Anon", lastname: "Imus"}
+amivaccess.user(['firstname','lastname'], function(res){
+	console.log(res);
+	\\ {firstname: "Anon", lastname: "Imus"}
+});
 ```
 
 <br>
