@@ -61,7 +61,8 @@
                 },
                 'datetime': function(dt) {
                     var tmp = new Date(dt);
-                    return new Date(dt).toJSON();
+		    // send an iso string without the milis, thats what the api expects
+		    return new Date(dt).toISOString().split('.')[0]+"Z";
                 }
             }
         }
