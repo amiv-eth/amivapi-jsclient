@@ -290,7 +290,7 @@
                 path: '/sessions/',
                 method: 'POST',
                 data: JSON.stringify({
-                    user: curUser.toLowerCase(),
+                    username: curUser.toLowerCase(),
                     password: curPass
                 }),
                 headers: {
