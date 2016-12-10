@@ -11,10 +11,8 @@
         var core = {
             // Important vars n' stuff
             lib: {
-                //api_url: 'https://amiv-apidev.vsos.ethz.ch',
-                api_url: 'https://amiv-apidev.vsos.ethz.ch',
-                spec_url: '/spec.json',
-                //spec_url: 'https://nicco.io/amiv/docs/spec.json',
+                api_url: api_url_config,
+                spec_url: spec_url_config,
                 authenticated: false,
                 ready: false,
                 req_time_out: 5000,
