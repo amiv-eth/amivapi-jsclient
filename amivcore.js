@@ -13,7 +13,7 @@
             lib: {
                 //api_url: 'https://amiv-apidev.vsos.ethz.ch',
                 api_url: 'https://amiv-apidev.vsos.ethz.ch',
-                spec_url: 'lib/amiv/spec.json',
+                spec_url: '/spec.json',
                 //spec_url: 'https://nicco.io/amiv/docs/spec.json',
                 authenticated: false,
                 ready: false,
