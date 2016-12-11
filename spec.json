@@ -880,6 +880,101 @@
         "eventsignups": {
             "paths": {
                 "/eventsignups/{_id}": {
+		    "POST": {
+			"params": [
+                            {
+                                "required": true,
+                                "type": "string",
+                                "name": "_id"
+                            },
+                            {
+                                "unique": false,
+                                "name": "additional_fields",
+                                "nullable": true,
+                                "required": false,
+                                "type": "json_event_field"
+                            },
+                            {
+                                "name": "user_id",
+                                "unique_combination": [
+                                    "eventsignups",
+                                    "event_id"
+                                ],
+                                "required": true,
+                                "not_patchable": true,
+                                "data_relation": {
+                                    "field": "id",
+                                    "resource": "users",
+                                    "embeddable": false
+                                },
+                                "only_self_enrollment_for_event": true,
+                                "unique": false,
+                                "type": "objectid"
+                            },
+                            {
+                                "signup_requirements": true,
+                                "name": "event_id",
+                                "unique_combination": [
+                                    "eventsignups",
+                                    "user_id",
+                                    "email"
+                                ],
+                                "required": true,
+                                "not_patchable": true,
+                                "data_relation": {
+                                    "field": "id",
+                                    "resource": "events",
+                                    "embeddable": false
+                                },
+                                "unique": false,
+                                "type": "objectid"
+                            },
+                            {
+                                "name": "_author",
+                                "nullable": true,
+                                "required": false,
+                                "readonly": true,
+                                "data_relation": {
+                                    "field": "id",
+                                    "resource": "users",
+                                    "embeddable": false
+                                },
+                                "unique": false,
+                                "type": "objectid"
+                            },
+                            {
+                                "regex": "^.+@.+$",
+                                "name": "email",
+                                "email_signup_must_be_allowed": true,
+                                "nullable": true,
+                                "required": false,
+                                "unique_combination": [
+                                    "eventsignups",
+                                    "event_id"
+                                ],
+                                "not_patchable": true,
+                                "maxlength": 100,
+                                "unique": false,
+                                "type": "objectid",
+                                "only_anonymous": true
+                            },
+                            {
+                                "name": "_confirmed",
+                                "nullable": true,
+                                "default": false,
+                                "required": false,
+                                "unique": false,
+                                "type": "boolean"
+                            },
+                            {
+                                "unique": true,
+                                "name": "id",
+                                "required": false,
+                                "type": "integer"
+                            }
+                        ],
+                        "label": "Post a Eventsignup"
+                    },
                     "PATCH": {
                         "params": [
                             {
