@@ -302,7 +302,7 @@
                 if (msg['_status'] == 'OK') {
                     set('cur_token_id', msg['id'], 1);
                     set('cur_token', msg['token'], 1);
-                    set('cur_user_id', parseInt(msg['user_id']), 1);
+                    set('cur_user_id', msg['user_id'], 1);
                     callback(true);
                 } else {
                     set('cur_token_id', null);
