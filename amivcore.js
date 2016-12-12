@@ -90,6 +90,15 @@
             return window.localStorage.getItem('glob-' + cname);
         }
 
+	/**
+	 * Remove variable in localStorage
+	 * @param {string} cname
+	 */
+	function remove(cname) {
+	    if (window.localStorage.getItem('gloc-' + cname) === null)
+		window.localStorage.removeItem('glob-' + cname);
+	}
+
         /** 
 	 * Make Request
 	 * @constructor
@@ -195,7 +204,7 @@
             },
             error: function(d) {
                 console.log('Cannot reach initialization spec: ' + core.lib.spec_url);
-                console.log(d);
+                console.error(d);
             }
         });
 
@@ -295,19 +304,19 @@
                     'Content-Type': 'application/json',
                 },
             }, function(msg) {
-                var reqVar = ['token', 'user_id', 'id'];
+                var reqVar = ['token', 'user', '_id'];
                 for (var i in reqVar) {
                     lib['cur_' + reqVar[i]] = msg[reqVar[i]];
                 }
                 if (msg['_status'] == 'OK') {
-                    set('cur_token_id', msg['id'], 1);
+                    set('cur_token_id', msg['_id'], 1);
                     set('cur_token', msg['token'], 1);
-                    set('cur_user_id', msg['user_id'], 1);
+                    set('cur_user_id', msg['user'], 1);
                     callback(true);
                 } else {
-                    set('cur_token_id', null);
-                    set('cur_token', null);
-                    set('cur_user_id', null);
+                    remove('cur_token_id');
+                    remove('cur_token');
+                    remove('cur_user_id');
                     callback(false);
                 }
             });
@@ -322,9 +331,9 @@
             lib.sessions.DELETE({
                 id: get('cur_token_id')
             }, function(res) {
-                set('cur_token', null);
-                set('cur_token_id', null);
-                set('cur_user_id', null);
+                remove('cur_token');
+                remove('cur_token_id');
+                remove('cur_user_id');
             });
         }
 
