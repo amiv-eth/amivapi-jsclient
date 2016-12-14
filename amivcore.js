@@ -100,20 +100,27 @@
 	}
 
         /** 
-	 * Make Request
+	 * Make general request with all request parameters in attr
 	 * @constructor
-	 * @param {} attr
+	 * @param {} attr - all request parameters (attr.path, attr.data, attr.method ...)
 	 * @param {} callback
 	 */
         function req(attr, callback) {
             callback = callback || function(msg) {
                 console.log(msg);
             };
+	    // put the json object into form-data
+	    var form = new FormData();
+	    console.log(attr);
+	    for (var key in attr['data'])
+		form.append(key, attr['data'][key]);
             $.ajax({
                 url: core.lib.api_url + attr.path,
-                data: attr.data,
+                data: form,
                 method: attr.method,
-                dataType: 'json',
+                dataType: "json",
+		contentType: false,
+		processData: false,
                 timeout: core.lib.req_time_out,
                 headers: attr.headers,
                 error: function(res) {
@@ -129,11 +136,11 @@
 	 * Make Function
 	 * @constructor
 	 * @param {string} domain
-	 * @param {string} m
+	 * @param {string} m - method
 	 */
         function makeFunc(domain, m) {
             return function(attr, callback) {
-                attr = attr || {};
+                attr = attr || {}; // if attr does not exist use empty object
                 var curLib = {}
                 for (var curAttr in attr['data']) {
                     var curAttrType = lib.getParamType(domain, curAttr);
@@ -164,8 +171,8 @@
                             if (lib[domain]['methods'][m][curLink]['params'][param]['required'] == true)
                                 if (curLib[lib[domain]['methods'][m][curLink]['params'][param]['name']] == undefined)
                                     return 'Error: Missing ' + lib[domain]['methods'][m][curLink]['params'][param]['name'];
-                    hdr['Content-Type'] = 'application/json';
-                    curLib = JSON.stringify(curLib);
+                    // hdr['Content-Type'] = 'application/json';
+                    // curLib = JSON.stringify(curLib);
                 }
                 req({
                     path: curPath,
@@ -178,13 +185,13 @@
         }
 
 	/**
-	 * AJAX Function
+	 * Read spec.json and set all needed parameters
 	 * @constructor
 	 */
         $.ajax({
             url: core.lib.spec_url,
             dataType: 'json',
-            timeout: 5000,
+            timeout: core.lib.req_time_out,
             success: function(d) {
                 var data = d['domains'];
                 for (var domain in data) {
@@ -244,8 +251,11 @@
         /** 
 	 * Get parameter type
 	 * @constructor
-	 * @param {} dom
-	 * @param {} param
+	 * @param {string} dom
+	 * @param {string} param
+	 * @example 
+	 * // returns type of field "_id" of resource "users"
+	 * amivcore.getParamType("users", "_id")
 	 */
         lib.getParamType = function(dom, param) {
             var tmp = 'none';
@@ -267,6 +277,10 @@
 	 * @param {} curDomain
 	 * @param {} curId
 	 * @param {} callback
+	 * @example 
+	 * amivcore.getEtag("users", amivcore.cur_user, function(res) {
+	 *     console.log(res);
+	 * });
 	 */
         lib.getEtag = function(curDomain, curId, callback) {
             return lib[curDomain].GET({
@@ -360,11 +374,13 @@
         }
 
         /**
-	 *  Get the necessary field for specific requests
-	 *  @constructor
-	 *  @param {} domain
-	 *  @param {} type
-	 *  @param {} wId
+	 * Get the necessary field for specific requests
+	 * @constructor
+	 * @param {} domain - resource eg. "/users"
+	 * @param {} type - HTTP request type eg. "PATCH"
+	 * @param {boolean} wId - with id eg. "/users/$id"
+	 * @example
+	 * amivcore.getRequiredFields("users", "POST", false)
 	 */
         lib.getRequiredFields = function(domain, type, wId) {
             var curTree;

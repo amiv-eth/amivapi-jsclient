@@ -1,2303 +1,1890 @@
 {
-    "domains": {
-        "studydocuments": {
-            "paths": {
-                "/studydocuments/{_id}": {
-                    "PATCH": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            },
-                            {
-                                "required": false,
-                                "type": "objectid",
-                                "name": "files",
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "files",
-                                    "embeddable": true
-                                }
-                            },
-                            {
-                                "name": "name",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 100,
-                                "unique": false,
-                                "type": "string"
-                            },
-                            {
-                                "name": "professor",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 100,
-                                "unique": false,
-                                "type": "string"
-                            },
-                            {
-                                "name": "exam_session",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 10,
-                                "unique": false,
-                                "type": "string"
-                            },
-                            {
-                                "name": "_author",
-                                "nullable": true,
-                                "required": false,
-                                "readonly": true,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": false
-                                },
-                                "unique": false,
-                                "type": "objectid"
-                            },
-                            {
-                                "name": "author_name",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 100,
-                                "unique": false,
-                                "type": "string"
-                            },
-                            {
-                                "unique": false,
-                                "name": "semester",
-                                "nullable": true,
-                                "required": false,
-                                "type": "integer"
-                            },
-                            {
-                                "name": "department",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 4,
-                                "unique": false,
-                                "type": "string"
-                            },
-                            {
-                                "name": "lecture",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 100,
-                                "unique": false,
-                                "type": "string"
-                            },
-                            {
-                                "name": "type",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 30,
-                                "unique": false,
-                                "type": "string"
-                            },
-                            {
-                                "unique": true,
-                                "name": "id",
-                                "required": false,
-                                "type": "integer"
-                            }
-                        ],
-                        "label": "Update a Studydocument"
-                    },
-                    "DELETE": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            }
-                        ],
-                        "label": "Delete a Studydocument"
-                    },
-                    "GET": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            }
-                        ],
-                        "label": "Retrieve a Studydocument"
-                    }
+  "domains": {
+    "purchases": {
+      "paths": {
+        "/purchases": {
+          "POST": {
+            "params": [
+              {
+                "unique": false,
+                "name": "timestamp",
+                "nullable": false,
+                "required": true,
+                "type": "datetime"
+              },
+              {
+                "not_patchable_unless_admin": true,
+                "name": "product",
+                "nullable": false,
+                "required": true,
+                "allowed": [
+                  "beer",
+                  "coffee"
+                ],
+                "unique": false,
+                "type": "string",
+                "maxlength": 6
+              },
+              {
+                "required": false,
+                "type": "objectid",
+                "name": "_id"
+              },
+              {
+                "name": "user",
+                "nullable": false,
+                "required": true,
+                "data_relation": {
+                  "field": "_id",
+                  "resource": "users",
+                  "embeddable": true
                 },
-                "/studydocuments": {
-                    "POST": {
-                        "params": [
-                            {
-                                "required": false,
-                                "type": "objectid",
-                                "name": "files",
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "files",
-                                    "embeddable": true
-                                }
-                            },
-                            {
-                                "name": "name",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 100,
-                                "unique": false,
-                                "type": "string"
-                            },
-                            {
-                                "name": "professor",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 100,
-                                "unique": false,
-                                "type": "string"
-                            },
-                            {
-                                "name": "exam_session",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 10,
-                                "unique": false,
-                                "type": "string"
-                            },
-                            {
-                                "name": "_author",
-                                "nullable": true,
-                                "required": false,
-                                "readonly": true,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": false
-                                },
-                                "unique": false,
-                                "type": "objectid"
-                            },
-                            {
-                                "name": "author_name",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 100,
-                                "unique": false,
-                                "type": "string"
-                            },
-                            {
-                                "unique": false,
-                                "name": "semester",
-                                "nullable": true,
-                                "required": false,
-                                "type": "integer"
-                            },
-                            {
-                                "name": "department",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 4,
-                                "unique": false,
-                                "type": "string"
-                            },
-                            {
-                                "name": "lecture",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 100,
-                                "unique": false,
-                                "type": "string"
-                            },
-                            {
-                                "name": "type",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 30,
-                                "unique": false,
-                                "type": "string"
-                            },
-                            {
-                                "unique": true,
-                                "name": "id",
-                                "required": false,
-                                "type": "integer"
-                            }
-                        ],
-                        "label": "Create a Studydocument"
-                    },
-                    "GET": {
-                        "params": [],
-                        "label": "Retrieve all studydocuments"
-                    }
-                }
-            },
-            "description": {
-                "fields": {
-                    "semester": "Study-Semester as an Integer starting with first semester Bachelor."
-                },
-                "general": "Study-documents are basically all documents that are connected to a course. This resource provides meta-data for the assigned files."
-            }
+                "unique": false,
+                "type": "objectid"
+              }
+            ],
+            "label": "Create a Purchase"
+          },
+          "GET": {
+            "params": [],
+            "label": "Retrieve all purchases"
+          }
         },
-        "users": {
-            "paths": {
-                "/users/{_id}": {
-                    "PATCH": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            },
-                            {
-                                "name": "legi",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 8,
-                                "unique": true,
-                                "type": "string"
-                            },
-                            {
-                                "unique": false,
-                                "name": "firstname",
-                                "maxlength": 50,
-                                "required": true,
-                                "type": "string"
-                            },
-                            {
-                                "required": false,
-                                "type": "objectid",
-                                "name": "sessions",
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "sessions",
-                                    "embeddable": true
-                                }
-                            },
-                            {
-                                "required": false,
-                                "type": "objectid",
-                                "name": "groupmemberships",
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "groupusermembers",
-                                    "embeddable": true
-                                }
-                            },
-                            {
-                                "unique": false,
-                                "name": "lastname",
-                                "maxlength": 50,
-                                "required": true,
-                                "type": "string"
-                            },
-                            {
-                                "name": "rfid",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 6,
-                                "unique": true,
-                                "type": "string"
-                            },
-                            {
-                                "name": "_author",
-                                "nullable": true,
-                                "required": false,
-                                "readonly": true,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": false
-                                },
-                                "unique": false,
-                                "type": "objectid"
-                            },
-                            {
-                                "regex": "^.+@.+$",
-                                "name": "email",
-                                "required": true,
-                                "maxlength": 100,
-                                "unique": true,
-                                "type": "string"
-                            },
-                            {
-                                "name": "phone",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 20,
-                                "unique": false,
-                                "type": "string"
-                            },
-                            {
-                                "name": "membership",
-                                "default": "none",
-                                "required": true,
-                                "maxlength": 13,
-                                "unique": false,
-                                "type": "string"
-                            },
-                            {
-                                "required": false,
-                                "type": "objectid",
-                                "name": "eventsignups",
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "eventsignups",
-                                    "embeddable": true
-                                }
-                            },
-                            {
-                                "name": "nethz",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 30,
-                                "unique": true,
-                                "type": "string",
-                                "empty": false
-                            },
-                            {
-                                "name": "gender",
-                                "required": true,
-                                "allowed": [
-                                    "male",
-                                    "female"
-                                ],
-                                "unique": false,
-                                "type": "string",
-                                "maxlength": 6
-                            },
-                            {
-                                "name": "department",
-                                "nullable": true,
-                                "required": false,
-                                "allowed": [
-                                    "itet",
-                                    "mavt"
-                                ],
-                                "unique": false,
-                                "type": "string",
-                                "maxlength": 5
-                            },
-                            {
-                                "name": "password",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 100,
-                                "unique": false,
-                                "type": "string"
-                            },
-                            {
-                                "unique": true,
-                                "name": "id",
-                                "required": false,
-                                "type": "integer"
-                            },
-                            {
-                                "name": "send_newsletter",
-                                "nullable": true,
-                                "default": true,
-                                "required": false,
-                                "unique": false,
-                                "type": "boolean"
-                            }
-                        ],
-                        "label": "Update a User"
-                    },
-                    "DELETE": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            }
-                        ],
-                        "label": "Delete a User"
-                    },
-                    "GET": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            }
-                        ],
-                        "label": "Retrieve a User"
-                    }
-                },
-                "/users/{nethz}": {
-                    "GET": {
-                        "params": [
-                            {
-                                "name": "nethz",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 30,
-                                "unique": true,
-                                "type": "string",
-                                "empty": false
-                            }
-                        ],
-                        "label": "Retrieve a User"
-                    }
-                },
-                "/users": {
-                    "POST": {
-                        "params": [
-                            {
-                                "name": "legi",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 8,
-                                "unique": true,
-                                "type": "string"
-                            },
-                            {
-                                "unique": false,
-                                "name": "firstname",
-                                "maxlength": 50,
-                                "required": true,
-                                "type": "string"
-                            },
-                            {
-                                "required": false,
-                                "type": "objectid",
-                                "name": "sessions",
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "sessions",
-                                    "embeddable": true
-                                }
-                            },
-                            {
-                                "required": false,
-                                "type": "objectid",
-                                "name": "groupmemberships",
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "groupusermembers",
-                                    "embeddable": true
-                                }
-                            },
-                            {
-                                "unique": false,
-                                "name": "lastname",
-                                "maxlength": 50,
-                                "required": true,
-                                "type": "string"
-                            },
-                            {
-                                "name": "rfid",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 6,
-                                "unique": true,
-                                "type": "string"
-                            },
-                            {
-                                "name": "_author",
-                                "nullable": true,
-                                "required": false,
-                                "readonly": true,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": false
-                                },
-                                "unique": false,
-                                "type": "objectid"
-                            },
-                            {
-                                "regex": "^.+@.+$",
-                                "name": "email",
-                                "required": true,
-                                "maxlength": 100,
-                                "unique": true,
-                                "type": "string"
-                            },
-                            {
-                                "name": "phone",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 20,
-                                "unique": false,
-                                "type": "string"
-                            },
-                            {
-                                "name": "membership",
-                                "default": "none",
-                                "required": true,
-                                "maxlength": 13,
-                                "unique": false,
-                                "type": "string"
-                            },
-                            {
-                                "required": false,
-                                "type": "objectid",
-                                "name": "eventsignups",
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "eventsignups",
-                                    "embeddable": true
-                                }
-                            },
-                            {
-                                "name": "nethz",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 30,
-                                "unique": true,
-                                "type": "string",
-                                "empty": false
-                            },
-                            {
-                                "name": "gender",
-                                "required": true,
-                                "allowed": [
-                                    "male",
-                                    "female"
-                                ],
-                                "unique": false,
-                                "type": "string",
-                                "maxlength": 6
-                            },
-                            {
-                                "name": "department",
-                                "nullable": true,
-                                "required": false,
-                                "allowed": [
-                                    "itet",
-                                    "mavt"
-                                ],
-                                "unique": false,
-                                "type": "string",
-                                "maxlength": 5
-                            },
-                            {
-                                "name": "password",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 100,
-                                "unique": false,
-                                "type": "string"
-                            },
-                            {
-                                "unique": true,
-                                "name": "id",
-                                "required": false,
-                                "type": "integer"
-                            },
-                            {
-                                "name": "send_newsletter",
-                                "nullable": true,
-                                "default": true,
-                                "required": false,
-                                "unique": false,
-                                "type": "boolean"
-                            }
-                        ],
-                        "label": "Create a User"
-                    },
-                    "GET": {
-                        "params": [],
-                        "label": "Retrieve all users"
-                    }
-                }
-            },
-            "description": {
-                "methods": {
-                    "GET": "Authorization is required for most of the fields"
-                },
-                "general": "In general, the user data will be generated from LDAP-Data. However, one might change the RFID-Number or the membership-status. Extraordinary members may not have a LDAP-Account and can therefore access all given fields."
-            }
-        },
-        "": {
-            "paths": {
-                "/": {
-                    "GET": {}
-                }
-            },
-            "description": {}
-        },
-        "purchases": {
-            "paths": {
-                "/purchases": {
-                    "POST": {
-                        "params": [
-                            {
-                                "unique": false,
-                                "name": "slot",
-                                "nullable": true,
-                                "required": false,
-                                "type": "integer"
-                            },
-                            {
-                                "name": "user_id",
-                                "nullable": true,
-                                "required": false,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": false
-                                },
-                                "unique": false,
-                                "type": "objectid"
-                            },
-                            {
-                                "unique": false,
-                                "name": "timestamp",
-                                "nullable": true,
-                                "required": false,
-                                "type": "datetime"
-                            },
-                            {
-                                "name": "_author",
-                                "nullable": true,
-                                "required": false,
-                                "readonly": true,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": false
-                                },
-                                "unique": false,
-                                "type": "objectid"
-                            },
-                            {
-                                "name": "type",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 5,
-                                "unique": false,
-                                "type": "string"
-                            },
-                            {
-                                "unique": true,
-                                "name": "id",
-                                "required": false,
-                                "type": "integer"
-                            }
-                        ],
-                        "label": "Create a Purchase"
-                    },
-                    "GET": {
-                        "params": [],
-                        "label": "Retrieve all purchases"
-                    }
-                },
-                "/purchases/{_id}": {
-                    "PATCH": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            },
-                            {
-                                "unique": false,
-                                "name": "slot",
-                                "nullable": true,
-                                "required": false,
-                                "type": "integer"
-                            },
-                            {
-                                "name": "user_id",
-                                "nullable": true,
-                                "required": false,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": false
-                                },
-                                "unique": false,
-                                "type": "objectid"
-                            },
-                            {
-                                "unique": false,
-                                "name": "timestamp",
-                                "nullable": true,
-                                "required": false,
-                                "type": "datetime"
-                            },
-                            {
-                                "name": "_author",
-                                "nullable": true,
-                                "required": false,
-                                "readonly": true,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": false
-                                },
-                                "unique": false,
-                                "type": "objectid"
-                            },
-                            {
-                                "name": "type",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 5,
-                                "unique": false,
-                                "type": "string"
-                            },
-                            {
-                                "unique": true,
-                                "name": "id",
-                                "required": false,
-                                "type": "integer"
-                            }
-                        ],
-                        "label": "Update a Purchase"
-                    },
-                    "DELETE": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            }
-                        ],
-                        "label": "Delete a Purchase"
-                    },
-                    "GET": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            }
-                        ],
-                        "label": "Retrieve a Purchase"
-                    }
-                }
-            },
-            "description": {
-                "fields": {
-                    "slot": "Slot in the machine which was purchased(different items, which may have different prices)."
-                },
-                "general": "A beer machine or kaffi machine transaction. Users should be able to get beer or kaffi, if their last timestamp is older than one day and they are AMIV members. This resource is used to log their purchases."
-            }
-        },
-        "docs": {
-            "paths": {
-                "/docs/": {
-                    "GET": {}
-                },
-                "/docs/spec.json": {
-                    "GET": {}
-                }
-            },
-            "description": {}
-        },
-        "groupmemberships": {
-            "paths": {
-                "/groupmemberships/{_id}": {
-                    "DELETE": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            }
-                        ],
-                        "label": "Delete a Groupusermember"
-                    },
-                    "GET": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            }
-                        ],
-                        "label": "Retrieve a Groupusermember"
-                    }
-                },
-                "/groupmembershipsbers": {
-                    "POST": {
-                        "params": [
-                            {
-                                "name": "group_id",
-                                "self_enrollment_must_be_allowed": true,
-                                "required": true,
-                                "unique_combination": [
-                                    "groupusermembers",
-                                    "user_id"
-                                ],
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "groups",
-                                    "embeddable": false
-                                },
-                                "unique": false,
-                                "type": "objectid"
-                            },
-                            {
-                                "name": "user_id",
-                                "unique_combination": [
-                                    "groupusermembers",
-                                    "group_id"
-                                ],
-                                "required": true,
-                                "only_self_enrollment_for_group": true,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": false
-                                },
-                                "unique": false,
-                                "type": "objectid"
-                            },
-                            {
-                                "name": "_author",
-                                "nullable": true,
-                                "required": false,
-                                "readonly": true,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": false
-                                },
-                                "unique": false,
-                                "type": "objectid"
-                            },
-                            {
-                                "unique": true,
-                                "name": "id",
-                                "required": false,
-                                "type": "integer"
-                            }
-                        ],
-                        "label": "Create a Groupusermember"
-                    },
-                    "GET": {
-                        "params": [],
-                        "label": "Retrieve all groupusermembers"
-                    }
-                }
-            },
-            "description": {
-                "general": "Assignment of registered users to groups."
-            }
-        },
-        "eventsignups": {
-            "paths": {
-                "/eventsignups/{_id}": {
-		    "POST": {
-			"params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            },
-                            {
-                                "unique": false,
-                                "name": "additional_fields",
-                                "nullable": true,
-                                "required": false,
-                                "type": "json_event_field"
-                            },
-                            {
-                                "name": "user_id",
-                                "unique_combination": [
-                                    "eventsignups",
-                                    "event_id"
-                                ],
-                                "required": true,
-                                "not_patchable": true,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": false
-                                },
-                                "only_self_enrollment_for_event": true,
-                                "unique": false,
-                                "type": "objectid"
-                            },
-                            {
-                                "signup_requirements": true,
-                                "name": "event_id",
-                                "unique_combination": [
-                                    "eventsignups",
-                                    "user_id",
-                                    "email"
-                                ],
-                                "required": true,
-                                "not_patchable": true,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "events",
-                                    "embeddable": false
-                                },
-                                "unique": false,
-                                "type": "objectid"
-                            },
-                            {
-                                "name": "_author",
-                                "nullable": true,
-                                "required": false,
-                                "readonly": true,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": false
-                                },
-                                "unique": false,
-                                "type": "objectid"
-                            },
-                            {
-                                "regex": "^.+@.+$",
-                                "name": "email",
-                                "email_signup_must_be_allowed": true,
-                                "nullable": true,
-                                "required": false,
-                                "unique_combination": [
-                                    "eventsignups",
-                                    "event_id"
-                                ],
-                                "not_patchable": true,
-                                "maxlength": 100,
-                                "unique": false,
-                                "type": "objectid",
-                                "only_anonymous": true
-                            },
-                            {
-                                "name": "_confirmed",
-                                "nullable": true,
-                                "default": false,
-                                "required": false,
-                                "unique": false,
-                                "type": "boolean"
-                            },
-                            {
-                                "unique": true,
-                                "name": "id",
-                                "required": false,
-                                "type": "integer"
-                            }
-                        ],
-                        "label": "Post a Eventsignup"
-                    },
-                    "PATCH": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            },
-                            {
-                                "unique": false,
-                                "name": "additional_fields",
-                                "nullable": true,
-                                "required": false,
-                                "type": "json_event_field"
-                            },
-                            {
-                                "name": "user_id",
-                                "unique_combination": [
-                                    "eventsignups",
-                                    "event_id"
-                                ],
-                                "required": true,
-                                "not_patchable": true,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": false
-                                },
-                                "only_self_enrollment_for_event": true,
-                                "unique": false,
-                                "type": "objectid"
-                            },
-                            {
-                                "signup_requirements": true,
-                                "name": "event_id",
-                                "unique_combination": [
-                                    "eventsignups",
-                                    "user_id",
-                                    "email"
-                                ],
-                                "required": true,
-                                "not_patchable": true,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "events",
-                                    "embeddable": false
-                                },
-                                "unique": false,
-                                "type": "objectid"
-                            },
-                            {
-                                "name": "_author",
-                                "nullable": true,
-                                "required": false,
-                                "readonly": true,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": false
-                                },
-                                "unique": false,
-                                "type": "objectid"
-                            },
-                            {
-                                "regex": "^.+@.+$",
-                                "name": "email",
-                                "email_signup_must_be_allowed": true,
-                                "nullable": true,
-                                "required": false,
-                                "unique_combination": [
-                                    "eventsignups",
-                                    "event_id"
-                                ],
-                                "not_patchable": true,
-                                "maxlength": 100,
-                                "unique": false,
-                                "type": "objectid",
-                                "only_anonymous": true
-                            },
-                            {
-                                "name": "_confirmed",
-                                "nullable": true,
-                                "default": false,
-                                "required": false,
-                                "unique": false,
-                                "type": "boolean"
-                            },
-                            {
-                                "unique": true,
-                                "name": "id",
-                                "required": false,
-                                "type": "integer"
-                            }
-                        ],
-                        "label": "Update a Eventsignup"
-                    },
-                    "DELETE": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            }
-                        ],
-                        "label": "Delete a Eventsignup"
-                    },
-                    "GET": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            }
-                        ],
-                        "label": "Retrieve a Eventsignup"
-                    }
-                },
-                "/eventsignups": {
-                    "GET": {
-                        "params": [],
-                        "label": "Retrieve all eventsignups"
-                    }
-                }
-            },
-            "description": {
-                "fields": {
-                    "additional_fields": "Data-schema depends on 'additional_fields' from the mapped event. Please provide in json-format.",
-                    "user_id": "To sign up as external user, set 'user_id' to '-1'",
-                    "email": "For registered users, this is just a projection of your general email-address. External users need to provide their email here."
-                },
-                "general": "You can signup here for an existing event inside of the registration-window. External Users can only sign up to public events."
-            }
-        },
-        "static": {
-            "paths": {
-                "/static/bootstrap/{filename}": {
-                    "GET": {}
-                },
-                "/static/{filename}": {
-                    "GET": {}
-                }
-            },
-            "description": {}
-        },
-        "groups": {
-            "paths": {
-                "/groups": {
-                    "POST": {
-                        "params": [
-                            {
-                                "required": false,
-                                "type": "objectid",
-                                "name": "user_subscribers",
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "groupusermembers",
-                                    "embeddable": true
-                                }
-                            },
-                            {
-                                "required": false,
-                                "type": "objectid",
-                                "name": "addresses",
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "forwardaddresses",
-                                    "embeddable": true
-                                }
-                            },
-                            {
-                                "unique": true,
-                                "name": "name",
-                                "maxlength": 100,
-                                "required": true,
-                                "type": "string"
-                            },
-                            {
-                                "unique": false,
-                                "name": "has_zoidberg_share",
-                                "default": false,
-                                "required": true,
-                                "type": "boolean"
-                            },
-                            {
-                                "unique": false,
-                                "name": "allow_self_enrollment",
-                                "default": false,
-                                "required": true,
-                                "type": "boolean"
-                            },
-                            {
-                                "name": "_author",
-                                "nullable": true,
-                                "required": false,
-                                "readonly": true,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": false
-                                },
-                                "unique": false,
-                                "type": "objectid"
-                            },
-                            {
-                                "unique": false,
-                                "name": "moderator_id",
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": false
-                                },
-                                "required": true,
-                                "type": "objectid"
-                            },
-                            {
-                                "required": false,
-                                "type": "objectid",
-                                "name": "owner",
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": true
-                                }
-                            },
-                            {
-                                "unique": true,
-                                "name": "id",
-                                "required": false,
-                                "type": "integer"
-                            },
-                            {
-                                "unique": false,
-                                "name": "permissions",
-                                "nullable": true,
-                                "required": false,
-                                "type": "permissions_jsonschema"
-                            }
-                        ],
-                        "label": "Create a Group"
-                    },
-                    "GET": {
-                        "params": [],
-                        "label": "Retrieve all groups"
-                    }
-                },
-                "/groups/{_id}": {
-                    "PATCH": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            },
-                            {
-                                "required": false,
-                                "type": "objectid",
-                                "name": "user_subscribers",
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "groupusermembers",
-                                    "embeddable": true
-                                }
-                            },
-                            {
-                                "required": false,
-                                "type": "objectid",
-                                "name": "addresses",
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "forwardaddresses",
-                                    "embeddable": true
-                                }
-                            },
-                            {
-                                "unique": true,
-                                "name": "name",
-                                "maxlength": 100,
-                                "required": true,
-                                "type": "string"
-                            },
-                            {
-                                "unique": false,
-                                "name": "has_zoidberg_share",
-                                "default": false,
-                                "required": true,
-                                "type": "boolean"
-                            },
-                            {
-                                "unique": false,
-                                "name": "allow_self_enrollment",
-                                "default": false,
-                                "required": true,
-                                "type": "boolean"
-                            },
-                            {
-                                "name": "_author",
-                                "nullable": true,
-                                "required": false,
-                                "readonly": true,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": false
-                                },
-                                "unique": false,
-                                "type": "objectid"
-                            },
-                            {
-                                "unique": false,
-                                "name": "moderator_id",
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": false
-                                },
-                                "required": true,
-                                "type": "objectid"
-                            },
-                            {
-                                "required": false,
-                                "type": "objectid",
-                                "name": "owner",
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": true
-                                }
-                            },
-                            {
-                                "unique": true,
-                                "name": "id",
-                                "required": false,
-                                "type": "integer"
-                            },
-                            {
-                                "unique": false,
-                                "name": "permissions",
-                                "nullable": true,
-                                "required": false,
-                                "type": "permissions_jsonschema"
-                            }
-                        ],
-                        "label": "Update a Group"
-                    },
-                    "DELETE": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            }
-                        ],
-                        "label": "Delete a Group"
-                    },
-                    "GET": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            }
-                        ],
-                        "label": "Retrieve a Group"
-                    }
-                }
-            },
-            "description": {
-                "fields": {
-                    "has_zoidberg_share": "Wether the group has a share in the amiv storage",
-                    "allow_self_enrollment": "If true, the group can be seen by all users and they can subscribe themselves",
-                    "permissions": "permissions the group grants. has to be according to the jsonschema available at /notyetavailable"
-                },
-                "general": "This resource describes the different teams in AMIV.A group can grant API permissions and can be reached with several addresses. To see the subscriptions, have a look at '/groupusermembers'. To see the mail addresses, see '/forwardaddresses'."
-            }
-        },
-        "forwardaddresses": {
-            "paths": {
-                "/forwardaddresses/{_id}": {
-                    "PATCH": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            },
-                            {
-                                "name": "group_id",
-                                "required": true,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "groups",
-                                    "embeddable": false
-                                },
-                                "only_groups_you_moderate": true,
-                                "unique": false,
-                                "type": "objectid"
-                            },
-                            {
-                                "required": false,
-                                "type": "objectid",
-                                "name": "group",
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "groups",
-                                    "embeddable": true
-                                }
-                            },
-                            {
-                                "unique": true,
-                                "name": "id",
-                                "required": false,
-                                "type": "integer"
-                            },
-                            {
-                                "unique": true,
-                                "name": "address",
-                                "maxlength": 100,
-                                "required": true,
-                                "type": "string"
-                            },
-                            {
-                                "name": "_author",
-                                "nullable": true,
-                                "required": false,
-                                "readonly": true,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": false
-                                },
-                                "unique": false,
-                                "type": "objectid"
-                            }
-                        ],
-                        "label": "Update a Forwardaddresse"
-                    },
-                    "DELETE": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            }
-                        ],
-                        "label": "Delete a Forwardaddresse"
-                    },
-                    "GET": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            }
-                        ],
-                        "label": "Retrieve a Forwardaddresse"
-                    }
-                },
-                "/forwardaddresses": {
-                    "POST": {
-                        "params": [
-                            {
-                                "name": "group_id",
-                                "required": true,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "groups",
-                                    "embeddable": false
-                                },
-                                "only_groups_you_moderate": true,
-                                "unique": false,
-                                "type": "objectid"
-                            },
-                            {
-                                "required": false,
-                                "type": "objectid",
-                                "name": "group",
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "groups",
-                                    "embeddable": true
-                                }
-                            },
-                            {
-                                "unique": true,
-                                "name": "id",
-                                "required": false,
-                                "type": "integer"
-                            },
-                            {
-                                "unique": true,
-                                "name": "address",
-                                "maxlength": 100,
-                                "required": true,
-                                "type": "string"
-                            },
-                            {
-                                "name": "_author",
-                                "nullable": true,
-                                "required": false,
-                                "readonly": true,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": false
-                                },
-                                "unique": false,
-                                "type": "objectid"
-                            }
-                        ],
-                        "label": "Create a Forwardaddresse"
-                    },
-                    "GET": {
-                        "params": [],
-                        "label": "Retrieve all forwardaddresses"
-                    }
-                }
-            },
-            "description": {
-                "fields": {
-                    "address": "E-Mail address to forward"
-                },
-                "general": "An email address associated with a group. By adding an address here, all mails sent to that address will be forwarded to all members of the associated group."
-            }
-        },
-        "sessions": {
-            "paths": {
-                "/sessions/{_id}": {
-                    "PATCH": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            },
-                            {
-                                "unique": false,
-                                "name": "token",
-                                "nullable": true,
-                                "required": false,
-                                "type": "string"
-                            },
-                            {
-                                "unique": false,
-                                "name": "user_id",
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": false
-                                },
-                                "required": true,
-                                "type": "objectid"
-                            },
-                            {
-                                "name": "_author",
-                                "nullable": true,
-                                "required": false,
-                                "readonly": true,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": false
-                                },
-                                "unique": false,
-                                "type": "objectid"
-                            },
-                            {
-                                "unique": true,
-                                "name": "id",
-                                "required": false,
-                                "type": "integer"
-                            }
-                        ],
-                        "label": "Update a Session"
-                    },
-                    "DELETE": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            }
-                        ],
-                        "label": "Delete a Session"
-                    },
-                    "GET": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            }
-                        ],
-                        "label": "Retrieve a Session"
-                    }
-                },
-                "/sessions": {
-                    "GET": {
-                        "params": [],
-                        "label": "Retrieve all sessions"
-                    }
-                }
-            },
-            "description": {
-                "methods": {
-                    "POST": "Login and aquire a login token. Post the fields 'user' and 'password', the response will contain the token."
-                },
-                "general": "A session is used to authenticate a user after he  provided login data. To acquire a session use POST, which will  give you a token to use as the user field of HTTP basic auth  header with an empty password. POST requires user and password  fields."
-            }
-        },
-        "storage": {
-            "paths": {
-                "/storage/{filename}": {
-                    "GET": {}
-                }
-            },
-            "description": {}
-        },
-        "joboffers": {
-            "paths": {
-                "/joboffers": {
-                    "POST": {
-                        "params": [
-                            {
-                                "unique": false,
-                                "name": "title_de",
-                                "nullable": true,
-                                "required": false,
-                                "type": "string"
-                            },
-                            {
-                                "name": "company",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 30,
-                                "unique": false,
-                                "type": "string"
-                            },
-                            {
-                                "unique": false,
-                                "name": "title_en",
-                                "nullable": true,
-                                "required": false,
-                                "type": "string"
-                            },
-                            {
-                                "name": "_author",
-                                "nullable": true,
-                                "required": false,
-                                "readonly": true,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": false
-                                },
-                                "unique": false,
-                                "type": "objectid"
-                            },
-                            {
-                                "unique": false,
-                                "name": "description_en",
-                                "nullable": true,
-                                "required": false,
-                                "type": "string"
-                            },
-                            {
-                                "unique": false,
-                                "name": "time_end",
-                                "nullable": true,
-                                "required": false,
-                                "type": "datetime"
-                            },
-                            {
-                                "filetype": [
-                                    "png",
-                                    "jpeg"
-                                ],
-                                "required": false,
-                                "type": "media",
-                                "name": "logo"
-                            },
-                            {
-                                "filetype": [
-                                    "pdf"
-                                ],
-                                "required": false,
-                                "type": "media",
-                                "name": "pdf"
-                            },
-                            {
-                                "unique": false,
-                                "name": "description_de",
-                                "nullable": true,
-                                "required": false,
-                                "type": "string"
-                            },
-                            {
-                                "unique": true,
-                                "name": "id",
-                                "required": false,
-                                "type": "integer"
-                            }
-                        ],
-                        "label": "Create a Joboffer"
-                    },
-                    "GET": {
-                        "params": [],
-                        "label": "Retrieve all joboffers"
-                    }
-                },
-                "/joboffers/{_id}": {
-                    "PUT": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            }
-                        ],
-                        "label": "Replace a Joboffer"
-                    },
-                    "PATCH": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            },
-                            {
-                                "unique": false,
-                                "name": "title_de",
-                                "nullable": true,
-                                "required": false,
-                                "type": "string"
-                            },
-                            {
-                                "name": "company",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 30,
-                                "unique": false,
-                                "type": "string"
-                            },
-                            {
-                                "unique": false,
-                                "name": "title_en",
-                                "nullable": true,
-                                "required": false,
-                                "type": "string"
-                            },
-                            {
-                                "name": "_author",
-                                "nullable": true,
-                                "required": false,
-                                "readonly": true,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": false
-                                },
-                                "unique": false,
-                                "type": "objectid"
-                            },
-                            {
-                                "unique": false,
-                                "name": "description_en",
-                                "nullable": true,
-                                "required": false,
-                                "type": "string"
-                            },
-                            {
-                                "unique": false,
-                                "name": "time_end",
-                                "nullable": true,
-                                "required": false,
-                                "type": "datetime"
-                            },
-                            {
-                                "filetype": [
-                                    "png",
-                                    "jpeg"
-                                ],
-                                "required": false,
-                                "type": "media",
-                                "name": "logo"
-                            },
-                            {
-                                "filetype": [
-                                    "pdf"
-                                ],
-                                "required": false,
-                                "type": "media",
-                                "name": "pdf"
-                            },
-                            {
-                                "unique": false,
-                                "name": "description_de",
-                                "nullable": true,
-                                "required": false,
-                                "type": "string"
-                            },
-                            {
-                                "unique": true,
-                                "name": "id",
-                                "required": false,
-                                "type": "integer"
-                            }
-                        ],
-                        "label": "Update a Joboffer"
-                    },
-                    "DELETE": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            }
-                        ],
-                        "label": "Delete a Joboffer"
-                    },
-                    "GET": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            }
-                        ],
-                        "label": "Retrieve a Joboffer"
-                    }
-                }
-            },
-            "description": {}
-        },
-        "events": {
-            "paths": {
-                "/events": {
-                    "POST": {
-                        "params": [
-                            {
-                                "unique": false,
-                                "name": "title_de",
-                                "nullable": true,
-                                "required": false,
-                                "type": "string"
-                            },
-                            {
-                                "unique": false,
-                                "name": "allow_email_signup",
-                                "default": false,
-                                "required": true,
-                                "type": "boolean"
-                            },
-                            {
-                                "readonly": true,
-                                "unique": false,
-                                "name": "signup_count",
-                                "required": false,
-                                "type": "string"
-                            },
-                            {
-                                "filetype": [
-                                    "png",
-                                    "jpeg"
-                                ],
-                                "required": false,
-                                "type": "media",
-                                "name": "img_thumbnail"
-                            },
-                            {
-                                "name": "time_end",
-                                "nullable": true,
-                                "later_than": "time_start",
-                                "required": false,
-                                "dependencies": [
-                                    "time_start"
-                                ],
-                                "unique": false,
-                                "type": "datetime"
-                            },
-                            {
-                                "required": false,
-                                "type": "objectid",
-                                "name": "signups",
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "eventsignups",
-                                    "embeddable": true
-                                }
-                            },
-                            {
-                                "unique": false,
-                                "name": "time_register_start",
-                                "nullable": true,
-                                "required": false,
-                                "type": "datetime"
-                            },
-                            {
-                                "unique": false,
-                                "name": "catchphrase_en",
-                                "nullable": true,
-                                "required": false,
-                                "type": "string"
-                            },
-                            {
-                                "unique": false,
-                                "name": "description_de",
-                                "nullable": true,
-                                "required": false,
-                                "type": "string"
-                            },
-                            {
-                                "name": "time_register_end",
-                                "nullable": true,
-                                "later_than": "time_register_start",
-                                "required": false,
-                                "dependencies": [
-                                    "time_register_start"
-                                ],
-                                "unique": false,
-                                "type": "datetime"
-                            },
-                            {
-                                "filetype": [
-                                    "png",
-                                    "jpeg"
-                                ],
-                                "required": false,
-                                "type": "media",
-                                "name": "img_banner"
-                            },
-                            {
-                                "unique": false,
-                                "name": "time_start",
-                                "nullable": true,
-                                "required": false,
-                                "type": "datetime"
-                            },
-                            {
-                                "name": "_author",
-                                "nullable": true,
-                                "required": false,
-                                "readonly": true,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": false
-                                },
-                                "unique": false,
-                                "type": "objectid"
-                            },
-                            {
-                                "name": "spots",
-                                "min": -1,
-                                "if_this_then": [
-                                    "time_register_start",
-                                    "time_register_end"
-                                ],
-                                "required": true,
-                                "unique": false,
-                                "type": "integer"
-                            },
-                            {
-                                "unique": true,
-                                "name": "id",
-                                "required": false,
-                                "type": "integer"
-                            },
-                            {
-                                "name": "location",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 50,
-                                "unique": false,
-                                "type": "string"
-                            },
-                            {
-                                "name": "show_infoscreen",
-                                "nullable": true,
-                                "default": false,
-                                "required": false,
-                                "unique": false,
-                                "type": "boolean"
-                            },
-                            {
-                                "unique": false,
-                                "name": "additional_fields",
-                                "nullable": true,
-                                "required": false,
-                                "type": "json_schema"
-                            },
-                            {
-                                "filetype": [
-                                    "png",
-                                    "jpeg"
-                                ],
-                                "required": false,
-                                "type": "media",
-                                "name": "img_infoscreen"
-                            },
-                            {
-                                "name": "price",
-                                "nullable": true,
-                                "required": false,
-                                "min": 0,
-                                "unique": false,
-                                "type": "integer"
-                            },
-                            {
-                                "unique": false,
-                                "name": "title_en",
-                                "nullable": true,
-                                "required": false,
-                                "type": "string"
-                            },
-                            {
-                                "unique": false,
-                                "name": "description_en",
-                                "nullable": true,
-                                "required": false,
-                                "type": "string"
-                            },
-                            {
-                                "filetype": [
-                                    "png",
-                                    "jpeg"
-                                ],
-                                "required": false,
-                                "type": "media",
-                                "name": "img_poster"
-                            },
-                            {
-                                "name": "show_announce",
-                                "nullable": true,
-                                "default": false,
-                                "required": false,
-                                "unique": false,
-                                "type": "boolean"
-                            },
-                            {
-                                "name": "show_website",
-                                "nullable": true,
-                                "default": false,
-                                "required": false,
-                                "unique": false,
-                                "type": "boolean"
-                            },
-                            {
-                                "unique": false,
-                                "name": "catchphrase_de",
-                                "nullable": true,
-                                "required": false,
-                                "type": "string"
-                            }
-                        ],
-                        "label": "Create a Event"
-                    },
-                    "GET": {
-                        "params": [],
-                        "label": "Retrieve all events"
-                    }
-                },
-                "/events/{_id}": {
-                    "PATCH": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            },
-                            {
-                                "unique": false,
-                                "name": "title_de",
-                                "nullable": true,
-                                "required": false,
-                                "type": "string"
-                            },
-                            {
-                                "unique": false,
-                                "name": "allow_email_signup",
-                                "default": false,
-                                "required": true,
-                                "type": "boolean"
-                            },
-                            {
-                                "readonly": true,
-                                "unique": false,
-                                "name": "signup_count",
-                                "required": false,
-                                "type": "string"
-                            },
-                            {
-                                "filetype": [
-                                    "png",
-                                    "jpeg"
-                                ],
-                                "required": false,
-                                "type": "media",
-                                "name": "img_thumbnail"
-                            },
-                            {
-                                "name": "time_end",
-                                "nullable": true,
-                                "later_than": "time_start",
-                                "required": false,
-                                "dependencies": [
-                                    "time_start"
-                                ],
-                                "unique": false,
-                                "type": "datetime"
-                            },
-                            {
-                                "required": false,
-                                "type": "objectid",
-                                "name": "signups",
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "eventsignups",
-                                    "embeddable": true
-                                }
-                            },
-                            {
-                                "unique": false,
-                                "name": "time_register_start",
-                                "nullable": true,
-                                "required": false,
-                                "type": "datetime"
-                            },
-                            {
-                                "unique": false,
-                                "name": "catchphrase_en",
-                                "nullable": true,
-                                "required": false,
-                                "type": "string"
-                            },
-                            {
-                                "unique": false,
-                                "name": "description_de",
-                                "nullable": true,
-                                "required": false,
-                                "type": "string"
-                            },
-                            {
-                                "name": "time_register_end",
-                                "nullable": true,
-                                "later_than": "time_register_start",
-                                "required": false,
-                                "dependencies": [
-                                    "time_register_start"
-                                ],
-                                "unique": false,
-                                "type": "datetime"
-                            },
-                            {
-                                "filetype": [
-                                    "png",
-                                    "jpeg"
-                                ],
-                                "required": false,
-                                "type": "media",
-                                "name": "img_banner"
-                            },
-                            {
-                                "unique": false,
-                                "name": "time_start",
-                                "nullable": true,
-                                "required": false,
-                                "type": "datetime"
-                            },
-                            {
-                                "name": "_author",
-                                "nullable": true,
-                                "required": false,
-                                "readonly": true,
-                                "data_relation": {
-                                    "field": "id",
-                                    "resource": "users",
-                                    "embeddable": false
-                                },
-                                "unique": false,
-                                "type": "objectid"
-                            },
-                            {
-                                "name": "spots",
-                                "min": -1,
-                                "if_this_then": [
-                                    "time_register_start",
-                                    "time_register_end"
-                                ],
-                                "required": true,
-                                "unique": false,
-                                "type": "integer"
-                            },
-                            {
-                                "unique": true,
-                                "name": "id",
-                                "required": false,
-                                "type": "integer"
-                            },
-                            {
-                                "name": "location",
-                                "nullable": true,
-                                "required": false,
-                                "maxlength": 50,
-                                "unique": false,
-                                "type": "string"
-                            },
-                            {
-                                "name": "show_infoscreen",
-                                "nullable": true,
-                                "default": false,
-                                "required": false,
-                                "unique": false,
-                                "type": "boolean"
-                            },
-                            {
-                                "unique": false,
-                                "name": "additional_fields",
-                                "nullable": true,
-                                "required": false,
-                                "type": "json_schema"
-                            },
-                            {
-                                "filetype": [
-                                    "png",
-                                    "jpeg"
-                                ],
-                                "required": false,
-                                "type": "media",
-                                "name": "img_infoscreen"
-                            },
-                            {
-                                "name": "price",
-                                "nullable": true,
-                                "required": false,
-                                "min": 0,
-                                "unique": false,
-                                "type": "integer"
-                            },
-                            {
-                                "unique": false,
-                                "name": "title_en",
-                                "nullable": true,
-                                "required": false,
-                                "type": "string"
-                            },
-                            {
-                                "unique": false,
-                                "name": "description_en",
-                                "nullable": true,
-                                "required": false,
-                                "type": "string"
-                            },
-                            {
-                                "filetype": [
-                                    "png",
-                                    "jpeg"
-                                ],
-                                "required": false,
-                                "type": "media",
-                                "name": "img_poster"
-                            },
-                            {
-                                "name": "show_announce",
-                                "nullable": true,
-                                "default": false,
-                                "required": false,
-                                "unique": false,
-                                "type": "boolean"
-                            },
-                            {
-                                "name": "show_website",
-                                "nullable": true,
-                                "default": false,
-                                "required": false,
-                                "unique": false,
-                                "type": "boolean"
-                            },
-                            {
-                                "unique": false,
-                                "name": "catchphrase_de",
-                                "nullable": true,
-                                "required": false,
-                                "type": "string"
-                            }
-                        ],
-                        "label": "Update a Event"
-                    },
-                    "DELETE": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            }
-                        ],
-                        "label": "Delete a Event"
-                    },
-                    "GET": {
-                        "params": [
-                            {
-                                "required": true,
-                                "type": "string",
-                                "name": "_id"
-                            }
-                        ],
-                        "label": "Retrieve a Event"
-                    }
-                }
-            },
-            "description": {
-                "fields": {
-                    "additional_fields": "must be provided in form of a JSON-Schema. You can add here fields you want to know from people signing up going further than their email-address",
-                    "price": "Price of the event as Integer in Rappen.",
-                    "allow_email_signup": "If False, only AMIV-Members can sign up for this event",
-                    "spots": "For no limit, set to '0'. If no signup required, set to '-1'. Otherwise just provide an integer."
-                },
-                "methods": {
-                    "GET": "You are always allowed, even without session, to view AMIV-Events"
-                },
-                "general": "An Event is basically everything happening in the AMIV. All time fields have the format YYYY-MM-DDThh:mmZ, e.g. 2014-12-20T11:50:06Z"
-            }
+        "/purchases/{_id}": {
+          "GET": {
+            "params": [
+              {
+                "required": true,
+                "type": "string",
+                "name": "_id"
+              }
+            ],
+            "label": "Retrieve a Purchase"
+          }
         }
+      },
+      "description": {
+        "fields": {},
+        "general": "A beer machine or kaffi machine transaction. Users should be able to get beer or kaffi, if their last timestamp is older than one day and they are AMIV members. This resource is used to log their purchases."
+      }
     },
-    "api_name": "API",
-    "base": "http:///",
-    "server_name": null
+    "users": {
+      "paths": {
+        "/users/{_id}": {
+          "PATCH": {
+            "params": [
+              {
+                "required": true,
+                "type": "string",
+                "name": "_id"
+              },
+              {
+                "not_patchable_unless_admin": true,
+                "name": "legi",
+                "nullable": true,
+                "required": false,
+                "maxlength": 8,
+                "unique": true,
+                "type": "string"
+              },
+              {
+                "required": false,
+                "type": "objectid",
+                "name": "_id"
+              },
+              {
+                "not_patchable_unless_admin": true,
+                "name": "firstname",
+                "nullable": false,
+                "required": true,
+                "maxlength": 50,
+                "type": "string",
+                "empty": false
+              },
+              {
+                "not_patchable_unless_admin": true,
+                "name": "lastname",
+                "nullable": false,
+                "required": true,
+                "maxlength": 50,
+                "type": "string",
+                "empty": false
+              },
+              {
+                "name": "rfid",
+                "nullable": true,
+                "required": false,
+                "maxlength": 6,
+                "unique": true,
+                "type": "string",
+                "empty": false
+              },
+              {
+                "nullable": true,
+                "name": "phone",
+                "maxlength": 20,
+                "required": false,
+                "type": "string",
+                "empty": false
+              },
+              {
+                "not_patchable_unless_admin": true,
+                "name": "membership",
+                "required": true,
+                "allowed": [
+                  "none",
+                  "regular",
+                  "extraordinary",
+                  "honorary"
+                ],
+                "unique": false,
+                "type": "string",
+                "maxlength": 13
+              },
+              {
+                "not_patchable_unless_admin": true,
+                "name": "nethz",
+                "nullable": true,
+                "default": null,
+                "required": false,
+                "maxlength": 30,
+                "unique": true,
+                "type": "string",
+                "empty": false
+              },
+              {
+                "not_patchable_unless_admin": true,
+                "name": "gender",
+                "required": true,
+                "allowed": [
+                  "male",
+                  "female"
+                ],
+                "unique": false,
+                "type": "string",
+                "maxlength": 6
+              },
+              {
+                "nullable": true,
+                "not_patchable_unless_admin": true,
+                "name": "department",
+                "allowed": [
+                  "itet",
+                  "mavt"
+                ],
+                "required": false,
+                "type": "string"
+              },
+              {
+                "name": "password",
+                "nullable": true,
+                "default": null,
+                "required": false,
+                "maxlength": 100,
+                "type": "string",
+                "empty": false
+              },
+              {
+                "regex": "^.+@.+$",
+                "name": "email",
+                "required": true,
+                "maxlength": 100,
+                "unique": true,
+                "type": "string"
+              },
+              {
+                "required": false,
+                "type": "boolean",
+                "name": "send_newsletter",
+                "nullable": true
+              }
+            ],
+            "label": "Update a User"
+          },
+          "DELETE": {
+            "params": [
+              {
+                "required": true,
+                "type": "string",
+                "name": "_id"
+              }
+            ],
+            "label": "Delete a User"
+          },
+          "GET": {
+            "params": [
+              {
+                "required": true,
+                "type": "string",
+                "name": "_id"
+              }
+            ],
+            "label": "Retrieve a User"
+          }
+        },
+        "/users/{nethz}": {
+          "GET": {
+            "params": [
+              {
+                "not_patchable_unless_admin": true,
+                "name": "nethz",
+                "nullable": true,
+                "default": null,
+                "required": false,
+                "maxlength": 30,
+                "unique": true,
+                "type": "string",
+                "empty": false
+              }
+            ],
+            "label": "Retrieve a User"
+          }
+        },
+        "/users": {
+          "POST": {
+            "params": [
+              {
+                "not_patchable_unless_admin": true,
+                "name": "legi",
+                "nullable": true,
+                "required": false,
+                "maxlength": 8,
+                "unique": true,
+                "type": "string"
+              },
+              {
+                "required": false,
+                "type": "objectid",
+                "name": "_id"
+              },
+              {
+                "not_patchable_unless_admin": true,
+                "name": "firstname",
+                "nullable": false,
+                "required": true,
+                "maxlength": 50,
+                "type": "string",
+                "empty": false
+              },
+              {
+                "not_patchable_unless_admin": true,
+                "name": "lastname",
+                "nullable": false,
+                "required": true,
+                "maxlength": 50,
+                "type": "string",
+                "empty": false
+              },
+              {
+                "name": "rfid",
+                "nullable": true,
+                "required": false,
+                "maxlength": 6,
+                "unique": true,
+                "type": "string",
+                "empty": false
+              },
+              {
+                "nullable": true,
+                "name": "phone",
+                "maxlength": 20,
+                "required": false,
+                "type": "string",
+                "empty": false
+              },
+              {
+                "not_patchable_unless_admin": true,
+                "name": "membership",
+                "required": true,
+                "allowed": [
+                  "none",
+                  "regular",
+                  "extraordinary",
+                  "honorary"
+                ],
+                "unique": false,
+                "type": "string",
+                "maxlength": 13
+              },
+              {
+                "not_patchable_unless_admin": true,
+                "name": "nethz",
+                "nullable": true,
+                "default": null,
+                "required": false,
+                "maxlength": 30,
+                "unique": true,
+                "type": "string",
+                "empty": false
+              },
+              {
+                "not_patchable_unless_admin": true,
+                "name": "gender",
+                "required": true,
+                "allowed": [
+                  "male",
+                  "female"
+                ],
+                "unique": false,
+                "type": "string",
+                "maxlength": 6
+              },
+              {
+                "nullable": true,
+                "not_patchable_unless_admin": true,
+                "name": "department",
+                "allowed": [
+                  "itet",
+                  "mavt"
+                ],
+                "required": false,
+                "type": "string"
+              },
+              {
+                "name": "password",
+                "nullable": true,
+                "default": null,
+                "required": false,
+                "maxlength": 100,
+                "type": "string",
+                "empty": false
+              },
+              {
+                "regex": "^.+@.+$",
+                "name": "email",
+                "required": true,
+                "maxlength": 100,
+                "unique": true,
+                "type": "string"
+              },
+              {
+                "required": false,
+                "type": "boolean",
+                "name": "send_newsletter",
+                "nullable": true
+              }
+            ],
+            "label": "Create a User"
+          },
+          "GET": {
+            "params": [],
+            "label": "Retrieve all users"
+          }
+        }
+      },
+      "description": {
+        "methods": {
+          "GET": "Authorization is required for most of the fields"
+        },
+        "general": "In general, the user data will be generated from LDAP-Data. However, one might change the RFID-Number or the membership-status. Extraordinary members may not have a LDAP-Account and can therefore access all given fields."
+      }
+    },
+    "sessions": {
+      "paths": {
+        "/sessions/{_id}": {
+          "DELETE": {
+            "params": [
+              {
+                "required": true,
+                "type": "string",
+                "name": "_id"
+              }
+            ],
+            "label": "Delete a Session"
+          },
+          "GET": {
+            "params": [
+              {
+                "required": true,
+                "type": "string",
+                "name": "_id"
+              }
+            ],
+            "label": "Retrieve a Session"
+          }
+        },
+        "/sessions": {
+          "POST": {
+            "params": [
+              {
+                "name": "username",
+                "nullable": false,
+                "required": true,
+                "type": "string",
+                "empty": false
+              },
+              {
+                "readonly": true,
+                "required": false,
+                "type": "string",
+                "name": "token"
+              },
+              {
+                "name": "password",
+                "nullable": false,
+                "required": true,
+                "type": "string",
+                "empty": false
+              },
+              {
+                "readonly": true,
+                "name": "user",
+                "data_relation": {
+                  "field": "_id",
+                  "cascade_delete": true,
+                  "resource": "users",
+                  "embeddable": true
+                },
+                "required": false,
+                "type": "objectid"
+              },
+              {
+                "required": false,
+                "type": "objectid",
+                "name": "_id"
+              }
+            ],
+            "label": "Create a Session"
+          },
+          "GET": {
+            "params": [],
+            "label": "Retrieve all sessions"
+          }
+        }
+      },
+      "description": {
+        "methods": {
+          "POST": "Login and aquire a login token. Post the fields 'username' and 'password', the response will contain the token. 'username' can be either nethz, mail, or user_id",
+          "GET": "Check token(s)."
+        },
+        "general": "A session is used to authenticate a user after he provided login data. A POST to /session will return a token you can use in an Authorization header: token <yourtoken>"
+      }
+    },
+    "groupmemberships": {
+      "paths": {
+        "/groupmemberships": {
+          "POST": {
+            "params": [
+              {
+                "required": false,
+                "type": "objectid",
+                "name": "_id"
+              },
+              {
+                "self_enrollment_required": true,
+                "name": "group",
+                "data_relation": {
+                  "field": "_id",
+                  "cascade_delete": true,
+                  "resource": "groups",
+                  "embeddable": true
+                },
+                "required": true,
+                "type": "objectid"
+              },
+              {
+                "name": "user",
+                "unique_combination": [
+                  "group"
+                ],
+                "required": true,
+                "only_self_or_moderator": true,
+                "data_relation": {
+                  "field": "_id",
+                  "cascade_delete": true,
+                  "resource": "users",
+                  "embeddable": true
+                },
+                "type": "objectid"
+              },
+              {
+                "required": false,
+                "type": "datetime",
+                "name": "expiry"
+              }
+            ],
+            "label": "Create a Groupmembership"
+          },
+          "GET": {
+            "params": [],
+            "label": "Retrieve all groupmemberships"
+          }
+        },
+        "/groupmemberships/{_id}": {
+          "DELETE": {
+            "params": [
+              {
+                "required": true,
+                "type": "string",
+                "name": "_id"
+              }
+            ],
+            "label": "Delete a Groupmembership"
+          },
+          "GET": {
+            "params": [
+              {
+                "required": true,
+                "type": "string",
+                "name": "_id"
+              }
+            ],
+            "label": "Retrieve a Groupmembership"
+          }
+        }
+      },
+      "description": {
+        "general": "Assignment of registered users to groups."
+      }
+    },
+    "joboffers": {
+      "paths": {
+        "/joboffers": {
+          "POST": {
+            "params": [
+              {
+                "dependencies": "description_de",
+                "name": "title_de",
+                "required_if_not": "title_en",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "required": false,
+                "type": "objectid",
+                "name": "_id"
+              },
+              {
+                "required": false,
+                "type": "string",
+                "name": "company",
+                "maxlength": 30
+              },
+              {
+                "dependencies": "description_en",
+                "name": "title_en",
+                "required_if_not": "title_de",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "required": false,
+                "type": "datetime",
+                "name": "time_end"
+              },
+              {
+                "required": false,
+                "type": "string",
+                "name": "description_en"
+              },
+              {
+                "name": "logo",
+                "filetype": [
+                  "png",
+                  "jpeg"
+                ],
+                "required": true,
+                "type": "media"
+              },
+              {
+                "default": false,
+                "required": false,
+                "type": "boolean",
+                "name": "show_website"
+              },
+              {
+                "required": false,
+                "type": "string",
+                "name": "description_de"
+              },
+              {
+                "name": "pdf",
+                "filetype": [
+                  "pdf"
+                ],
+                "required": true,
+                "type": "media"
+              }
+            ],
+            "label": "Create a Joboffer"
+          },
+          "GET": {
+            "params": [],
+            "label": "Retrieve all joboffers"
+          }
+        },
+        "/joboffers/{_id}": {
+          "PATCH": {
+            "params": [
+              {
+                "required": true,
+                "type": "string",
+                "name": "_id"
+              },
+              {
+                "dependencies": "description_de",
+                "name": "title_de",
+                "required_if_not": "title_en",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "required": false,
+                "type": "objectid",
+                "name": "_id"
+              },
+              {
+                "required": false,
+                "type": "string",
+                "name": "company",
+                "maxlength": 30
+              },
+              {
+                "dependencies": "description_en",
+                "name": "title_en",
+                "required_if_not": "title_de",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "required": false,
+                "type": "datetime",
+                "name": "time_end"
+              },
+              {
+                "required": false,
+                "type": "string",
+                "name": "description_en"
+              },
+              {
+                "name": "logo",
+                "filetype": [
+                  "png",
+                  "jpeg"
+                ],
+                "required": true,
+                "type": "media"
+              },
+              {
+                "default": false,
+                "required": false,
+                "type": "boolean",
+                "name": "show_website"
+              },
+              {
+                "required": false,
+                "type": "string",
+                "name": "description_de"
+              },
+              {
+                "name": "pdf",
+                "filetype": [
+                  "pdf"
+                ],
+                "required": true,
+                "type": "media"
+              }
+            ],
+            "label": "Update a Joboffer"
+          },
+          "DELETE": {
+            "params": [
+              {
+                "required": true,
+                "type": "string",
+                "name": "_id"
+              }
+            ],
+            "label": "Delete a Joboffer"
+          },
+          "GET": {
+            "params": [
+              {
+                "required": true,
+                "type": "string",
+                "name": "_id"
+              }
+            ],
+            "label": "Retrieve a Joboffer"
+          }
+        }
+      },
+      "description": {
+        "fields": {},
+        "general": "A Job Offer posts repositoryUsers can post a job offer with the necessarycontent to fill out a job offer advertisement"
+      }
+    },
+    "eventsignups": {
+      "paths": {
+        "/eventsignups/{_id}": {
+          "PATCH": {
+            "params": [
+              {
+                "required": true,
+                "type": "string",
+                "name": "_id"
+              },
+              {
+                "required": false,
+                "type": "json_event_field",
+                "name": "additional_fields",
+                "nullable": true
+              },
+              {
+                "readonly": true,
+                "name": "confirmed",
+                "nullable": true,
+                "required": false,
+                "type": "boolean"
+              },
+              {
+                "signup_requirements": true,
+                "name": "event",
+                "unique_combination": [
+                  "user",
+                  "email"
+                ],
+                "required": true,
+                "not_patchable": true,
+                "data_relation": {
+                  "field": "_id",
+                  "resource": "events",
+                  "embeddable": true
+                },
+                "type": "objectid"
+              },
+              {
+                "name": "user",
+                "nullable": false,
+                "required": false,
+                "not_patchable": true,
+                "data_relation": {
+                  "field": "_id",
+                  "resource": "users",
+                  "embeddable": true
+                },
+                "only_self_enrollment_for_event": true,
+                "type": "objectid"
+              },
+              {
+                "required": false,
+                "type": "objectid",
+                "name": "_id"
+              },
+              {
+                "regex": "^.+@.+$",
+                "name": "email",
+                "email_signup_must_be_allowed": true,
+                "nullable": false,
+                "required": false,
+                "not_patchable": true,
+                "maxlength": 100,
+                "type": "string"
+              }
+            ],
+            "label": "Update a Eventsignup"
+          },
+          "DELETE": {
+            "params": [
+              {
+                "required": true,
+                "type": "string",
+                "name": "_id"
+              }
+            ],
+            "label": "Delete a Eventsignup"
+          },
+          "GET": {
+            "params": [
+              {
+                "required": true,
+                "type": "string",
+                "name": "_id"
+              }
+            ],
+            "label": "Retrieve a Eventsignup"
+          }
+        },
+        "/eventsignups": {
+          "POST": {
+            "params": [
+              {
+                "required": false,
+                "type": "json_event_field",
+                "name": "additional_fields",
+                "nullable": true
+              },
+              {
+                "readonly": true,
+                "name": "confirmed",
+                "nullable": true,
+                "required": false,
+                "type": "boolean"
+              },
+              {
+                "signup_requirements": true,
+                "name": "event",
+                "unique_combination": [
+                  "user",
+                  "email"
+                ],
+                "required": true,
+                "not_patchable": true,
+                "data_relation": {
+                  "field": "_id",
+                  "resource": "events",
+                  "embeddable": true
+                },
+                "type": "objectid"
+              },
+              {
+                "name": "user",
+                "nullable": false,
+                "required": false,
+                "not_patchable": true,
+                "data_relation": {
+                  "field": "_id",
+                  "resource": "users",
+                  "embeddable": true
+                },
+                "only_self_enrollment_for_event": true,
+                "type": "objectid"
+              },
+              {
+                "required": false,
+                "type": "objectid",
+                "name": "_id"
+              },
+              {
+                "regex": "^.+@.+$",
+                "name": "email",
+                "email_signup_must_be_allowed": true,
+                "nullable": false,
+                "required": false,
+                "not_patchable": true,
+                "maxlength": 100,
+                "type": "string"
+              }
+            ],
+            "label": "Create a Eventsignup"
+          },
+          "GET": {
+            "params": [],
+            "label": "Retrieve all eventsignups"
+          }
+        }
+      },
+      "description": {
+        "fields": {
+          "additional_fields": "Data-schema depends on 'additional_fields' from the mapped event. Please provide in json-format.",
+          "email": "For registered users, this is just a projection of your general email-address. External users need to provide their email here.",
+          "user": "Provide either user or email."
+        },
+        "methods": {
+          "PATCH": "Only additional_fields can be changed"
+        },
+        "general": "You can signup here for an existing event inside of the registration-window. External Users can only sign up to public events."
+      }
+    },
+    "groups": {
+      "paths": {
+        "/groups": {
+          "POST": {
+            "params": [
+              {
+                "name": "name",
+                "required": true,
+                "maxlength": 100,
+                "unique": true,
+                "type": "string",
+                "empty": false
+              },
+              {
+                "default": false,
+                "required": false,
+                "type": "boolean",
+                "name": "has_zoidberg_share"
+              },
+              {
+                "default": false,
+                "required": false,
+                "type": "boolean",
+                "name": "allow_self_enrollment"
+              },
+              {
+                "name": "moderator",
+                "data_relation": {
+                  "field": "_id",
+                  "resource": "users"
+                },
+                "nullable": true,
+                "required": false,
+                "type": "objectid"
+              },
+              {
+                "name": "forward_to",
+                "unique_elements": true,
+                "required": false,
+                "type": "list",
+                "schema": {
+                  "regex": "^.+@.+$",
+                  "type": "string",
+                  "maxlength": 100
+                }
+              },
+              {
+                "name": "receive_from",
+                "unique_elements": true,
+                "unique_elements_for_resource": true,
+                "required": false,
+                "type": "list",
+                "schema": {
+                  "regex": "[a-z0-9_\\.-]+",
+                  "type": "string",
+                  "maxlength": 100
+                }
+              },
+              {
+                "required": false,
+                "type": "objectid",
+                "name": "_id"
+              },
+              {
+                "propertyschema": {
+                  "api_resources": true,
+                  "type": "string"
+                },
+                "name": "permissions",
+                "nullable": true,
+                "required": false,
+                "type": "dict",
+                "valueschema": {
+                  "type": "string",
+                  "allowed": [
+                    "read",
+                    "readwrite"
+                  ]
+                }
+              }
+            ],
+            "label": "Create a Group"
+          },
+          "GET": {
+            "params": [],
+            "label": "Retrieve all groups"
+          }
+        },
+        "/groups/{_id}": {
+          "PATCH": {
+            "params": [
+              {
+                "required": true,
+                "type": "string",
+                "name": "_id"
+              },
+              {
+                "name": "name",
+                "required": true,
+                "maxlength": 100,
+                "unique": true,
+                "type": "string",
+                "empty": false
+              },
+              {
+                "default": false,
+                "required": false,
+                "type": "boolean",
+                "name": "has_zoidberg_share"
+              },
+              {
+                "default": false,
+                "required": false,
+                "type": "boolean",
+                "name": "allow_self_enrollment"
+              },
+              {
+                "name": "moderator",
+                "data_relation": {
+                  "field": "_id",
+                  "resource": "users"
+                },
+                "nullable": true,
+                "required": false,
+                "type": "objectid"
+              },
+              {
+                "name": "forward_to",
+                "unique_elements": true,
+                "required": false,
+                "type": "list",
+                "schema": {
+                  "regex": "^.+@.+$",
+                  "type": "string",
+                  "maxlength": 100
+                }
+              },
+              {
+                "name": "receive_from",
+                "unique_elements": true,
+                "unique_elements_for_resource": true,
+                "required": false,
+                "type": "list",
+                "schema": {
+                  "regex": "[a-z0-9_\\.-]+",
+                  "type": "string",
+                  "maxlength": 100
+                }
+              },
+              {
+                "required": false,
+                "type": "objectid",
+                "name": "_id"
+              },
+              {
+                "propertyschema": {
+                  "api_resources": true,
+                  "type": "string"
+                },
+                "name": "permissions",
+                "nullable": true,
+                "required": false,
+                "type": "dict",
+                "valueschema": {
+                  "type": "string",
+                  "allowed": [
+                    "read",
+                    "readwrite"
+                  ]
+                }
+              }
+            ],
+            "label": "Update a Group"
+          },
+          "DELETE": {
+            "params": [
+              {
+                "required": true,
+                "type": "string",
+                "name": "_id"
+              }
+            ],
+            "label": "Delete a Group"
+          },
+          "GET": {
+            "params": [
+              {
+                "required": true,
+                "type": "string",
+                "name": "_id"
+              }
+            ],
+            "label": "Retrieve a Group"
+          }
+        },
+        "/groups/{name}": {
+          "GET": {
+            "params": [
+              {
+                "name": "name",
+                "required": true,
+                "maxlength": 100,
+                "unique": true,
+                "type": "string",
+                "empty": false
+              }
+            ],
+            "label": "Retrieve a Group"
+          }
+        }
+      },
+      "description": {
+        "fields": {
+          "has_zoidberg_share": "If the group has a share in the amiv storage",
+          "allow_self_enrollment": "If true, the group can be seen by all users and they can subscribe themselves",
+          "permissions": "permissions the group grants. has to be according to the jsonschema available at /notyetavailable"
+        },
+        "general": "This resource describes the different teams in AMIV.A group can grant API permissions and can be reached with several addresses. To see the addresses of this group, see /groupaddressesTo see the members, have a look at '/groupmembers'. To see the addresses messages are forwarded to, see /groupforwards"
+      }
+    },
+    "studydocuments": {
+      "paths": {
+        "/studydocuments/{_id}": {
+          "PATCH": {
+            "params": [
+              {
+                "required": true,
+                "type": "string",
+                "name": "_id"
+              },
+              {
+                "name": "files",
+                "required": true,
+                "type": "list",
+                "schema": {
+                  "type": "media"
+                }
+              },
+              {
+                "nullable": true,
+                "name": "author",
+                "maxlength": 100,
+                "required": false,
+                "type": "string"
+              },
+              {
+                "nullable": true,
+                "name": "professor",
+                "maxlength": 100,
+                "required": false,
+                "type": "string"
+              },
+              {
+                "name": "title",
+                "maxlength": 100,
+                "required": false,
+                "type": "string",
+                "empty": false
+              },
+              {
+                "allowed": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5+"
+                ],
+                "name": "semester",
+                "nullable": true,
+                "required": false,
+                "type": "string"
+              },
+              {
+                "readonly": true,
+                "name": "uploader",
+                "data_relation": {
+                  "field": "_id",
+                  "resource": "users"
+                },
+                "nullable": true,
+                "required": false,
+                "type": "objectid"
+              },
+              {
+                "allowed": [
+                  "itet",
+                  "mavt",
+                  "arch",
+                  "baug",
+                  "bsse",
+                  "infk",
+                  "matl",
+                  "biol",
+                  "chab",
+                  "math",
+                  "phys",
+                  "erdw",
+                  "usys",
+                  "hest",
+                  "mtec",
+                  "gess"
+                ],
+                "name": "department",
+                "nullable": true,
+                "required": false,
+                "type": "string"
+              },
+              {
+                "nullable": true,
+                "name": "lecture",
+                "maxlength": 100,
+                "required": false,
+                "type": "string"
+              },
+              {
+                "required": false,
+                "type": "integer",
+                "name": "course_year"
+              },
+              {
+                "required": false,
+                "type": "objectid",
+                "name": "_id"
+              },
+              {
+                "required": false,
+                "type": "string",
+                "name": "type",
+                "allowed": [
+                  "exams",
+                  "cheat sheets",
+                  "lecture documents",
+                  "exercises"
+                ]
+              }
+            ],
+            "label": "Update a Studydocument"
+          },
+          "DELETE": {
+            "params": [
+              {
+                "required": true,
+                "type": "string",
+                "name": "_id"
+              }
+            ],
+            "label": "Delete a Studydocument"
+          },
+          "GET": {
+            "params": [
+              {
+                "required": true,
+                "type": "string",
+                "name": "_id"
+              }
+            ],
+            "label": "Retrieve a Studydocument"
+          }
+        },
+        "/studydocuments": {
+          "POST": {
+            "params": [
+              {
+                "name": "files",
+                "required": true,
+                "type": "list",
+                "schema": {
+                  "type": "media"
+                }
+              },
+              {
+                "nullable": true,
+                "name": "author",
+                "maxlength": 100,
+                "required": false,
+                "type": "string"
+              },
+              {
+                "nullable": true,
+                "name": "professor",
+                "maxlength": 100,
+                "required": false,
+                "type": "string"
+              },
+              {
+                "name": "title",
+                "maxlength": 100,
+                "required": false,
+                "type": "string",
+                "empty": false
+              },
+              {
+                "allowed": [
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5+"
+                ],
+                "name": "semester",
+                "nullable": true,
+                "required": false,
+                "type": "string"
+              },
+              {
+                "readonly": true,
+                "name": "uploader",
+                "data_relation": {
+                  "field": "_id",
+                  "resource": "users"
+                },
+                "nullable": true,
+                "required": false,
+                "type": "objectid"
+              },
+              {
+                "allowed": [
+                  "itet",
+                  "mavt",
+                  "arch",
+                  "baug",
+                  "bsse",
+                  "infk",
+                  "matl",
+                  "biol",
+                  "chab",
+                  "math",
+                  "phys",
+                  "erdw",
+                  "usys",
+                  "hest",
+                  "mtec",
+                  "gess"
+                ],
+                "name": "department",
+                "nullable": true,
+                "required": false,
+                "type": "string"
+              },
+              {
+                "nullable": true,
+                "name": "lecture",
+                "maxlength": 100,
+                "required": false,
+                "type": "string"
+              },
+              {
+                "required": false,
+                "type": "integer",
+                "name": "course_year"
+              },
+              {
+                "required": false,
+                "type": "objectid",
+                "name": "_id"
+              },
+              {
+                "required": false,
+                "type": "string",
+                "name": "type",
+                "allowed": [
+                  "exams",
+                  "cheat sheets",
+                  "lecture documents",
+                  "exercises"
+                ]
+              }
+            ],
+            "label": "Create a Studydocument"
+          },
+          "DELETE": {
+            "params": [],
+            "label": "Delete all studydocuments"
+          },
+          "GET": {
+            "params": [],
+            "label": "Retrieve all studydocuments"
+          }
+        }
+      },
+      "description": {
+        "fields": {
+          "semester": "Study-Semester as an Integer starting with first semester Bachelor.",
+          "course_year": "Course Year",
+          "uploader": "Read-only field describing which AMIV member uploaded the files",
+          "author": "Original author of the uploaded files(Prof, Assistant, copyright owner)"
+        },
+        "general": "Study-documents are basically all documents that are connected to a course. All metadata is optional and intended to help finding the file. There are no strict categories, as those do not work well for courses available to many departements and aiming at all levels of experience."
+      }
+    },
+    "events": {
+      "paths": {
+        "/events": {
+          "POST": {
+            "params": [
+              {
+                "name": "title_de",
+                "required_if_not": "title_en",
+                "nullable": true,
+                "required": false,
+                "dependencies": [
+                  "catchphrase_de",
+                  "description_de"
+                ],
+                "maxlength": 100,
+                "type": "string"
+              },
+              {
+                "name": "time_register_start",
+                "nullable": true,
+                "only_if_not_null": "spots",
+                "required": false,
+                "dependencies": [
+                  "time_register_end"
+                ],
+                "type": "datetime",
+                "earlier_than": "time_register_end"
+              },
+              {
+                "readonly": true,
+                "required": false,
+                "type": "integer",
+                "name": "signup_count"
+              },
+              {
+                "filetype": [
+                  "png",
+                  "jpeg"
+                ],
+                "required": false,
+                "type": "media",
+                "name": "img_thumbnail"
+              },
+              {
+                "dependencies": [
+                  "time_start"
+                ],
+                "name": "time_end",
+                "nullable": true,
+                "later_than": "time_start",
+                "required": false,
+                "type": "datetime"
+              },
+              {
+                "name": "allow_email_signup",
+                "nullable": false,
+                "default": false,
+                "only_if_not_null": "spots",
+                "required": false,
+                "type": "boolean"
+              },
+              {
+                "nullable": true,
+                "dependencies": [
+                  "time_register_start",
+                  "time_register_end"
+                ],
+                "name": "spots",
+                "min": 0,
+                "required": false,
+                "type": "integer"
+              },
+              {
+                "name": "description_de",
+                "nullable": true,
+                "required": false,
+                "type": "string",
+                "maxlength": 10000
+              },
+              {
+                "name": "time_register_end",
+                "nullable": true,
+                "later_than": "time_register_start",
+                "required": false,
+                "dependencies": [
+                  "time_register_start"
+                ],
+                "type": "datetime",
+                "only_if_not_null": "spots"
+              },
+              {
+                "filetype": [
+                  "png",
+                  "jpeg"
+                ],
+                "required": false,
+                "type": "media",
+                "name": "img_banner"
+              },
+              {
+                "dependencies": [
+                  "time_end"
+                ],
+                "name": "time_start",
+                "nullable": true,
+                "required": false,
+                "type": "datetime",
+                "earlier_than": "time_end"
+              },
+              {
+                "name": "catchphrase_en",
+                "nullable": true,
+                "required": false,
+                "type": "string",
+                "maxlength": 500
+              },
+              {
+                "name": "priority",
+                "min": 0,
+                "default": 5,
+                "max": 10,
+                "required": true,
+                "type": "integer"
+              },
+              {
+                "nullable": true,
+                "name": "location",
+                "maxlength": 50,
+                "required": false,
+                "type": "string"
+              },
+              {
+                "name": "show_infoscreen",
+                "nullable": false,
+                "default": false,
+                "required": false,
+                "type": "boolean"
+              },
+              {
+                "name": "additional_fields",
+                "nullable": true,
+                "only_if_not_null": "spots",
+                "required": false,
+                "type": "json_schema"
+              },
+              {
+                "filetype": [
+                  "png",
+                  "jpeg"
+                ],
+                "required": false,
+                "type": "media",
+                "name": "img_infoscreen"
+              },
+              {
+                "nullable": true,
+                "name": "price",
+                "min": 0,
+                "required": false,
+                "type": "integer"
+              },
+              {
+                "name": "title_en",
+                "required_if_not": "title_de",
+                "nullable": true,
+                "required": false,
+                "dependencies": [
+                  "catchphrase_en",
+                  "description_en"
+                ],
+                "maxlength": 100,
+                "type": "string"
+              },
+              {
+                "name": "description_en",
+                "nullable": true,
+                "required": false,
+                "type": "string",
+                "maxlength": 10000
+              },
+              {
+                "name": "time_advertising_end",
+                "nullable": false,
+                "later_than": "time_advertising_start",
+                "required": true,
+                "type": "datetime"
+              },
+              {
+                "filetype": [
+                  "png",
+                  "jpeg"
+                ],
+                "required": false,
+                "type": "media",
+                "name": "img_poster"
+              },
+              {
+                "name": "show_announce",
+                "nullable": false,
+                "default": false,
+                "required": false,
+                "type": "boolean"
+              },
+              {
+                "name": "time_advertising_start",
+                "nullable": false,
+                "required": true,
+                "type": "datetime",
+                "earlier_than": "time_advertising_end"
+              },
+              {
+                "name": "show_website",
+                "nullable": false,
+                "default": false,
+                "required": false,
+                "type": "boolean"
+              },
+              {
+                "name": "catchphrase_de",
+                "nullable": true,
+                "required": false,
+                "type": "string",
+                "maxlength": 500
+              },
+              {
+                "required": false,
+                "type": "objectid",
+                "name": "_id"
+              }
+            ],
+            "label": "Create a Event"
+          },
+          "GET": {
+            "params": [],
+            "label": "Retrieve all events"
+          }
+        },
+        "/events/{_id}": {
+          "PATCH": {
+            "params": [
+              {
+                "required": true,
+                "type": "string",
+                "name": "_id"
+              },
+              {
+                "name": "title_de",
+                "required_if_not": "title_en",
+                "nullable": true,
+                "required": false,
+                "dependencies": [
+                  "catchphrase_de",
+                  "description_de"
+                ],
+                "maxlength": 100,
+                "type": "string"
+              },
+              {
+                "name": "time_register_start",
+                "nullable": true,
+                "only_if_not_null": "spots",
+                "required": false,
+                "dependencies": [
+                  "time_register_end"
+                ],
+                "type": "datetime",
+                "earlier_than": "time_register_end"
+              },
+              {
+                "readonly": true,
+                "required": false,
+                "type": "integer",
+                "name": "signup_count"
+              },
+              {
+                "filetype": [
+                  "png",
+                  "jpeg"
+                ],
+                "required": false,
+                "type": "media",
+                "name": "img_thumbnail"
+              },
+              {
+                "dependencies": [
+                  "time_start"
+                ],
+                "name": "time_end",
+                "nullable": true,
+                "later_than": "time_start",
+                "required": false,
+                "type": "datetime"
+              },
+              {
+                "name": "allow_email_signup",
+                "nullable": false,
+                "default": false,
+                "only_if_not_null": "spots",
+                "required": false,
+                "type": "boolean"
+              },
+              {
+                "nullable": true,
+                "dependencies": [
+                  "time_register_start",
+                  "time_register_end"
+                ],
+                "name": "spots",
+                "min": 0,
+                "required": false,
+                "type": "integer"
+              },
+              {
+                "name": "description_de",
+                "nullable": true,
+                "required": false,
+                "type": "string",
+                "maxlength": 10000
+              },
+              {
+                "name": "time_register_end",
+                "nullable": true,
+                "later_than": "time_register_start",
+                "required": false,
+                "dependencies": [
+                  "time_register_start"
+                ],
+                "type": "datetime",
+                "only_if_not_null": "spots"
+              },
+              {
+                "filetype": [
+                  "png",
+                  "jpeg"
+                ],
+                "required": false,
+                "type": "media",
+                "name": "img_banner"
+              },
+              {
+                "dependencies": [
+                  "time_end"
+                ],
+                "name": "time_start",
+                "nullable": true,
+                "required": false,
+                "type": "datetime",
+                "earlier_than": "time_end"
+              },
+              {
+                "name": "catchphrase_en",
+                "nullable": true,
+                "required": false,
+                "type": "string",
+                "maxlength": 500
+              },
+              {
+                "name": "priority",
+                "min": 0,
+                "default": 5,
+                "max": 10,
+                "required": true,
+                "type": "integer"
+              },
+              {
+                "nullable": true,
+                "name": "location",
+                "maxlength": 50,
+                "required": false,
+                "type": "string"
+              },
+              {
+                "name": "show_infoscreen",
+                "nullable": false,
+                "default": false,
+                "required": false,
+                "type": "boolean"
+              },
+              {
+                "name": "additional_fields",
+                "nullable": true,
+                "only_if_not_null": "spots",
+                "required": false,
+                "type": "json_schema"
+              },
+              {
+                "filetype": [
+                  "png",
+                  "jpeg"
+                ],
+                "required": false,
+                "type": "media",
+                "name": "img_infoscreen"
+              },
+              {
+                "nullable": true,
+                "name": "price",
+                "min": 0,
+                "required": false,
+                "type": "integer"
+              },
+              {
+                "name": "title_en",
+                "required_if_not": "title_de",
+                "nullable": true,
+                "required": false,
+                "dependencies": [
+                  "catchphrase_en",
+                  "description_en"
+                ],
+                "maxlength": 100,
+                "type": "string"
+              },
+              {
+                "name": "description_en",
+                "nullable": true,
+                "required": false,
+                "type": "string",
+                "maxlength": 10000
+              },
+              {
+                "name": "time_advertising_end",
+                "nullable": false,
+                "later_than": "time_advertising_start",
+                "required": true,
+                "type": "datetime"
+              },
+              {
+                "filetype": [
+                  "png",
+                  "jpeg"
+                ],
+                "required": false,
+                "type": "media",
+                "name": "img_poster"
+              },
+              {
+                "name": "show_announce",
+                "nullable": false,
+                "default": false,
+                "required": false,
+                "type": "boolean"
+              },
+              {
+                "name": "time_advertising_start",
+                "nullable": false,
+                "required": true,
+                "type": "datetime",
+                "earlier_than": "time_advertising_end"
+              },
+              {
+                "name": "show_website",
+                "nullable": false,
+                "default": false,
+                "required": false,
+                "type": "boolean"
+              },
+              {
+                "name": "catchphrase_de",
+                "nullable": true,
+                "required": false,
+                "type": "string",
+                "maxlength": 500
+              },
+              {
+                "required": false,
+                "type": "objectid",
+                "name": "_id"
+              }
+            ],
+            "label": "Update a Event"
+          },
+          "DELETE": {
+            "params": [
+              {
+                "required": true,
+                "type": "string",
+                "name": "_id"
+              }
+            ],
+            "label": "Delete a Event"
+          },
+          "GET": {
+            "params": [
+              {
+                "required": true,
+                "type": "string",
+                "name": "_id"
+              }
+            ],
+            "label": "Retrieve a Event"
+          }
+        }
+      },
+      "description": {
+        "fields": {
+          "additional_fields": "must be provided in form of a JSON-Schema. You can add here fields you want to know from people signing up going further than their email-address",
+          "price": "Price of the event as Integer in Rappen.",
+          "allow_email_signup": "If False, only AMIV-Members can sign up for this event",
+          "spots": "For no limit, set to '0'. If no signup required, set to '-1'. Otherwise just provide an integer."
+        },
+        "methods": {
+          "GET": "You are always allowed, even without session, to view AMIV-Events"
+        },
+        "general": "An Event is basically everything happening in the AMIV. All time fields have the format YYYY-MM-DDThh:mmZ, e.g. 2014-12-20T11:50:06Z"
+      }
+    }
+  },
+  "api_name": "API",
+  "base": "http:///",
+  "server_name": null
 }

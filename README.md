@@ -28,7 +28,32 @@ Login:
 amivcore.login(user, password, function(loginReturn){
 if (loginReturn !== true)
   alert("Wrong credentials!");
-console.log(window.localStorage.getItem("glob-cur_token"))
+console.log(amivecore.cur_user);
+});
+```
+
+Create event:
+```js
+attr = {}
+attr['data'] = {
+	"time_advertising_end":"2016-12-30T12:44:19Z",
+	"time_advertising_start":"2016-12-07T12:44:19Z",
+	"title_de":"Testevent",
+	"priority":5,
+	"show_announce":false,
+	"show_infoscreen":"true",
+	"spots":5,
+	"show_website":"true"
+	,"description_de":"wjfdaknflkwa",
+	"catchphrase_de":"wjfdaknflkwa",
+	"time_register_start":"2016-12-14T14:52:45Z",
+	"time_register_end":"2016-12-24T14:53:35Z"
+};
+// "#img_infoscreen" is a file input in the html content of the website
+attr['data']['img_infoscreen'] = $("#img_infoscreen")[0].files[0];
+
+amivcore.events.POST(attr, function(res) {
+	console.log(res);
 });
 ```
 
