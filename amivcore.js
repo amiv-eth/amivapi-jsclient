@@ -111,7 +111,6 @@
             };
 	    // put the json object into form-data
 	    var form = new FormData();
-	    console.log(attr);
 	    for (var key in attr['data'])
 		form.append(key, attr['data'][key]);
             $.ajax({

@@ -19,16 +19,14 @@ An example configuration is also in `config.js`.
 Get request for event resource:
 ```js
 amivcore.events.GET({}, function(data) {
-  // do stuff with events
+  console.log(data);
 });
 ```
 
-Login:
+Get specific event(`584ef956b2d8952f701f3595`) with query to `/events/{_id}`:
 ```js
-amivcore.login(user, password, function(loginReturn){
-if (loginReturn !== true)
-  alert("Wrong credentials!");
-console.log(amivecore.cur_user);
+amivcore.events.GET({'id': '584ef956b2d8952f701f3595'}, function(data) {
+  console.log(data);
 });
 ```
 
@@ -54,6 +52,30 @@ attr['data']['img_infoscreen'] = $("#img_infoscreen")[0].files[0];
 
 amivcore.events.POST(attr, function(res) {
 	console.log(res);
+});
+```
+
+For PATCH requests the etag is needed in order to guarantee concurency in the api. Note that the etag is also recieved  with every answer that contains the object we want to change. This example uses a spereate request to the api but if the etag is already known then this request can be skimped.
+```js
+amivcore.getEtag("events", "584ef956b2d8952f701f3595", function(etag) {
+  console.log(etag);
+  // now we can send the actual PATCH request
+  amivcore.events.PATCH({
+	'id': '584ef956b2d8952f701f3595',
+	'header': {'if-match': etag},
+	'data': {'title_de': 'GEÄNDERT'}},
+	function(data) {
+      console.log(data);
+	});
+});
+```
+
+Login:
+```js
+amivcore.login(user, password, function(loginReturn){
+if (loginReturn !== true)
+  alert("Wrong credentials!");
+console.log(amivecore.cur_user);
 });
 ```
 
