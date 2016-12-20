@@ -30,6 +30,21 @@ amivcore.events.GET({'id': '584ef956b2d8952f701f3595'}, function(data) {
 });
 ```
 
+Get all events in the current advertisement window ordered by priority. The same structure can be used for "projection" and "embedded" queries.
+```js
+attr = {};
+attr['where'] = {
+    "time_advertising_start": {"$lte": amivcore.getTime()},
+	"time_advertising_end": {"$gte": amivcore.getTime()},
+	"show_website":true
+};
+attr['sort'] = "-priority,time_advertising_start";
+
+amivcore.events.GET(attr, function(res) {
+    console.log(res);
+});
+```
+
 Create event:
 ```js
 attr = {}

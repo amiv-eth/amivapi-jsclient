@@ -99,13 +99,40 @@
 		window.localStorage.removeItem('glob-' + cname);
 	}
 
-        /** 
-	 * Make general request with all request parameters in attr
+
+	 /**
+	 * Make JSON request with all request parameters in attr
 	 * @constructor
 	 * @param {} attr - all request parameters (attr.path, attr.data, attr.method ...)
 	 * @param {} callback
 	 */
         function req(attr, callback) {
+            callback = callback || function(msg) {
+                console.log(msg);
+            };
+            $.ajax({
+                url: core.lib.api_url + attr.path,
+                data: JSON.stringify(attr.data),
+                method: attr.method,
+                dataType: "json",
+                timeout: core.lib.req_time_out,
+                headers: attr.headers,
+                error: function(res) {
+                    if (core.lib.show_errors) console.log(res);
+                    callback(res);
+                },
+            }).done(function(res) {
+                callback(res);
+            });
+        }
+
+        /**
+	 * Make FormData request with all request parameters in attr
+	 * @constructor
+	 * @param {} attr - all request parameters (attr.path, attr.data, attr.method ...)
+	 * @param {} callback
+	 */
+        function reqFormData(attr, callback) {
             callback = callback || function(msg) {
                 console.log(msg);
             };
@@ -161,6 +188,23 @@
                     curLink += '/{_id}';
                 }
 
+		// handle where, sort, projection, embedded
+		var urlParams = "";
+		var urlTypes = ['where', 'sort', 'projection', 'embedded'];
+		if (m === 'GET') {
+		    for (var curUrlType of urlTypes) {
+			if (attr[curUrlType] != undefined) {
+			    urlParams += ((urlParams != "") ? "&" + curUrlType + "=": curUrlType + "=");
+			    if (typeof attr[curUrlType] === 'object')
+				urlParams += JSON.stringify(attr[curUrlType]);
+			    else
+				urlParams += attr[curUrlType];
+			}
+		    }
+		}
+		// append urlParams
+		curPath += "?" + urlParams;
+
                 if (get('cur_token') != null)
                     hdr['Authorization'] = 'Basic ' + btoa(get('cur_token') + ':');
 
@@ -173,12 +217,22 @@
                     // hdr['Content-Type'] = 'application/json';
                     // curLib = JSON.stringify(curLib);
                 }
-                req({
-                    path: curPath,
-                    method: m,
-                    data: curLib,
-                    headers: hdr,
-                }, callback);
+                if (m != 'POST' && m != 'PATCH') {
+		    req({
+			path: curPath,
+			method: m,
+			data: curLib,
+			headers: hdr,
+                    }, callback);
+		}
+		else {
+		    reqFormData({
+			path: curPath,
+			method: m,
+			data: curLib,
+			headers: hdr,
+                    }, callback);
+		}
                 return true;
             };
         }
@@ -269,6 +323,18 @@
             } catch (e) {}
             return tmp;
         }
+
+	/**
+	 * Get the time converted to the format the api understands
+	 * @param {Date} d -  date. If none is given then the NOW is used
+	 * @example
+	 * amivcore.getTime() // "2016-12-20T14:12:55Z"
+	 * amivcore.getTime(new Date(2011, 0, 1, 2, 3, 4, 567)) // "2011-01-01T01:03:04Z"
+	 */
+	lib.getTime = function(d) {
+	    d = d || new Date();
+	    return core.adapter['datetime'](d.toISOString());
+	}
 
         /** 
 	 * Get the etag
