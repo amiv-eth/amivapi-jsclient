@@ -35,8 +35,9 @@
                         return 'application/json'
                     },
                     'Authorization': function() {
-                        if (get('cur_token') != null)
-                            return 'Basic ' + btoa(get('cur_token') + ':');
+			var token = get('cur_token');
+                        if (token != null)
+                            return token;
                         return '';
                     },
                     'If-Match': function() {
