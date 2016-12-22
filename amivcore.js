@@ -375,10 +375,10 @@
             req({
                 path: '/sessions/',
                 method: 'POST',
-                data: JSON.stringify({
+                data: {
                     username: curUser.toLowerCase(),
                     password: curPass
-                }),
+                },
                 headers: {
                     'Content-Type': 'application/json',
                 },
