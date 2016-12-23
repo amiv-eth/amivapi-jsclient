@@ -77,8 +77,12 @@
 	 * @param {string} cname
 	 * @param {string} cvalue
 	 */
-        function set(cname, cvalue, exdays) {
-            window.localStorage.setItem('glob-' + cname, cvalue);
+        function set(cname, cvalue) {
+	    if (lib.shortSession) {
+		window.sessionStorage.setItem('glob-' + cname, cvalue);
+	    }
+	    else
+		window.localStorage.setItem('glob-' + cname, cvalue);
         }
 
 	/**
@@ -87,7 +91,10 @@
 	 * @param {string} cname
 	 */
         function get(cname) {
-            return window.localStorage.getItem('glob-' + cname);
+	    if (lib.shortSession)
+		return window.sessionStorage.getItem('glob-' + cname);
+	    else
+		return window.localStorage.getItem('glob-' + cname);
         }
 
 	/**
@@ -95,8 +102,14 @@
 	 * @param {string} cname
 	 */
 	function remove(cname) {
-	    if (window.localStorage.getItem('gloc-' + cname) === null)
-		window.localStorage.removeItem('glob-' + cname);
+	    if (lib.shortSession) {
+		if (window.sessionStorage.getItem('glob-' + cname) !== null)
+		    window.sessionStorage.removeItem('glob-' + cname);
+	    }
+	    else {
+		if (window.localStorage.getItem('glob-' + cname) !== null)
+		    window.localStorage.removeItem('glob-' + cname);
+	    }
 	}
 
 
@@ -364,13 +377,15 @@
         }
 
         /**
-	 *  Login function
-	 *  @constructor
-	 *  @param {} curUser
-	 *  @param {} curPass
-	 *  @param {} callback
+	 * Login function
+	 * @constructor
+	 * @param {String} curUser
+	 * @param {String} curPass
+	 * @param {function} callback
+	 * @param {boolean} shortSession - if user is on a public computer
 	 */
-        lib.login = function(curUser, curPass, callback) {
+        lib.login = function(curUser, curPass, callback, shortSession = false) {
+	    lib.shortSession = shortSession || false;
             callback = callback || dummy;
             req({
                 path: '/sessions/',
@@ -388,14 +403,16 @@
                     lib['cur_' + reqVar[i]] = msg[reqVar[i]];
                 }
                 if (msg['_status'] == 'OK') {
-                    set('cur_token_id', msg['_id'], 1);
-                    set('cur_token', msg['token'], 1);
-                    set('cur_user_id', msg['user'], 1);
+                    set('cur_token_id', msg['_id']);
+                    set('cur_token', msg['token']);
+                    set('cur_user_id', msg['user']);
+		    set('cur_session_etag', msg['_etag']);
                     callback(true);
                 } else {
                     remove('cur_token_id');
                     remove('cur_token');
                     remove('cur_user_id');
+		    remove('cur_session_etag');
                     callback(false);
                 }
             });
@@ -408,11 +425,13 @@
         lib.logout = function() {
             // Deleting token from api and unsetting the vars
             lib.sessions.DELETE({
-                id: get('cur_token_id')
+                id: get('cur_token_id'),
+		header: {"if-match": get('cur_session_etag')}
             }, function(res) {
                 remove('cur_token');
                 remove('cur_token_id');
                 remove('cur_user_id');
+		remove('cur_session_etag');
             });
         }
 
