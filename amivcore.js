@@ -15,9 +15,9 @@
                 spec_url: spec_url_config,
                 authenticated: false,
                 ready: false,
-                req_time_out: 5000,
+                req_time_out: 60000,
                 on_interval: 100,
-                auth_interval: 5000,
+                auth_interval: 60000,
                 auth_allowed_fails: 5,
                 auth_fails: 0,
                 show_errors: false,
@@ -128,6 +128,7 @@
                 url: core.lib.api_url + attr.path,
                 data: JSON.stringify(attr.data),
                 method: attr.method,
+		contentType:"application/json; charset=utf-8",
                 dataType: "json",
                 timeout: core.lib.req_time_out,
                 headers: attr.headers,
@@ -154,7 +155,7 @@
 	    var form = new FormData();
 	    for (var key in attr['data'])
 		form.append(key, attr['data'][key]);
-            $.ajax({
+	    $.ajax({
                 url: core.lib.api_url + attr.path,
                 data: form,
                 method: attr.method,
@@ -171,6 +172,18 @@
                 callback(res);
             });
         }
+
+	function serializable(obj) {
+	    if (typeof obj !== 'object' || obj === null)
+		return true;
+	    if (typeof obj === 'object' && obj.constructor === File)
+		return false;
+	    for (var key in obj) {
+		if (serializable(obj[key]) === false)
+		    return false;
+	    }
+	    return true;
+	}
 
 	/**
 	 * Make Function
@@ -230,8 +243,7 @@
                                     return 'Error: Missing ' + lib[domain]['methods'][m][curLink]['params'][param]['name'];
                     // hdr['Content-Type'] = 'application/json';
                     // curLib = JSON.stringify(curLib);
-                }
-                if (m != 'POST' && m != 'PATCH') {
+                if (serializable(curLib)) {
 		    req({
 			path: curPath,
 			method: m,
