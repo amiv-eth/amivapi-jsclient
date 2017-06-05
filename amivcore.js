@@ -243,6 +243,7 @@
                                     return 'Error: Missing ' + lib[domain]['methods'][m][curLink]['params'][param]['name'];
                     // hdr['Content-Type'] = 'application/json';
                     // curLib = JSON.stringify(curLib);
+                }
                 if (serializable(curLib)) {
 		    req({
 			path: curPath,
